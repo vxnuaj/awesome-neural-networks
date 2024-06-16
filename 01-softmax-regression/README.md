@@ -2,8 +2,14 @@
 
 If you're familiar with [linear regression](https://www.youtube.com/watch?v=7ArmBVF2dCs), a model where you aim to construct a line of best fit to a set of linear data points by iteratively adjusting the model parameters ($W$ and $B$), it's important to **not**, I repeat, **not,** get Softmax Regression confused with fitting a line of to a set of datapoints.
 
-Softmax regression is not at all akin to linear regression.
 
+<p align="center">
+  <img src="../util_images/linearreg.gif" width="400" align="center"><br>
+  <span style="font-size:12px;">Softmax regression is not at all akin to linear regression.</span>
+</p>
+
+
+Softmax regression is not at all akin to linear regression.
 Rather, for intuition, you can refer to [logistic regression](https://www.youtube.com/playlist?list=PLblh5JKOoLUKxzEP5HA2d-Li7IJkHfXSe), where the outcome of a model isn't exactly to construct a line of best fit to a set of datapoints but rather to perform [binary classification](https://en.wikipedia.org/wiki/Binary_classification) on a given set of datapoints.
 
 ### a recap on logistic regression
