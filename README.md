@@ -1,8 +1,35 @@
-A Git Repo on Neural Networks -- all implemented from Scratch
+# awesome-neural-networks
 
-# Neural Networks from Scratch
+> Last Update: [  ]
+
+This repository is a dive into vanilla neural networks, implemented in pure NumPy to accelerate foundational learning.
+
+It's designed for anyone with a base level of knowledge on Calculus, Linear Algebra, and Programming to gain an understanding of Neural Networks from the first principles.
+
+## motivation
+
+Neural Networks, in the context of artifiical intelligence, have been powering LLMs ([GPT-4o](https://openai.com/index/hello-gpt-4o/), [Claude-3](https://www.anthropic.com/news/claude-3-family), [Gemini](https://deepmind.google/technologies/gemini/), [Mixtral](https://mistral.ai/news/mixtral-of-experts/), etc) and leading the charge towards progressing to a hypothetical artifical general intelligence. 
+
+The possible futures humanity can unlock with these models are increasingly optimistic and they prove to be an invaluable tool, for those who are inspired to accelerate the coming of artifical intelligence, to learn from first principles.
+
+Personally, I knew that if I wanted to get deeper into the technical trenches of convolutional neural networks, transformers, deep RL, and more, foundational knowledge was key to understand and refine.
+
+So this is why I built this repo, to build foundational knowledge for myself and build a resource for others to do so as well.
+
+## table of contents
+
+1. [Softmax Regression](#softmax-regression)
+
+## a brief history of neural networks
+
+## softmax regression
+
+
+
+---
 
 ## Outline
+
 
 ### 1. A Brief History of Neural Networks
 - [ ] Write an overview of the history and evolution of neural networks.
