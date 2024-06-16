@@ -56,20 +56,30 @@ As you can see, large negative values can lead to a near vanishing output of $\s
 
 Now for an example of an output that's near $1$, we can take an input $x$ that's positively large, for example, $20$:
 
-$$
-\sigma(20) = \frac{1}{1 + e^{- (20)}} \\~\\
-\sigma(20) = \frac{1}{1 + e^{20}}\\~\\
-\sigma(20) = \frac{1}{1 + 2.718281828459^{-20}} \\~\\
-\sigma(20) = \frac{1}{1.0000000020612} \\~\\
-\sigma(20) = .99999999793 \\~\\
-$$
+<div align = 'center'>
 
+$\sigma(20) = \frac{1}{1 + e^{- (20)}}$ 
+
+$\sigma(20) = \frac{1}{1 + e^{20}}$
+
+$\sigma(20) = \frac{1}{1 + 2.718281828459^{-20}}$
+
+$\sigma(20) = \frac{1}{1.0000000020612}$ 
+
+$\sigma(20) = .99999999793$ 
+
+</div>
 And if we want to reach the intermediary value, $.5$, we can define the input as $0$:
 
-$$
-\sigma(0) = \frac{1}{1 + e^{- (0)}} \\~\\
-\sigma(0) = \frac{1}{1 + 1} \\~\\
-\sigma(0) = \frac{1}{2} = .5\\~\\
-$$
+
+<div align = 'center'>
+
+$\sigma(0) = \frac{1}{1 + e^{- (0)}}$
+
+$\sigma(0) = \frac{1}{1 + 1}$
+
+$\sigma(0) = \frac{1}{2} = .5$
+
+<div>
 
 Pretty simple.
