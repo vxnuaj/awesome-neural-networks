@@ -38,9 +38,13 @@ As an example of a near $0$ output, let's take an input $x$ that's extremely neg
 
 $$
 \sigma(-20) = \frac{1}{1 + e^{- (-20)}} \\~\newline
+
 \sigma(-20) = \frac{1}{1 + e^{20}} \\~\\
+
 \sigma(-20) = \frac{1}{1 + 485165195.40978} \\~\\
+
 \sigma(-20) = \frac{1}{485165196.40978}\\~\\
+
 \sigma(-20) = 2.06115362\times10^{-9} \approx .00000000206115
 $$
 
