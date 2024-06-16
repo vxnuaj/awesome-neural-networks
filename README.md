@@ -37,7 +37,7 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 ### 2. SoftMax Regression
 - [ ] Recap on Logistic Regression
-  - [ ] Logistic Mathematical Function
+  - [X] Logistic Mathematical Function
   - [ ] Affine Transformation
   - [ ] Introduce Concept of a Neuron / Perceptron
   - [ ] Forward Pass
