@@ -30,12 +30,22 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 ## Outline
 
+**CURRENT AREA OF FOCUS: Softmax Regression**
 
 ### 1. A Brief History of Neural Networks
 - [ ] Write an overview of the history and evolution of neural networks.
 
 ### 2. SoftMax Regression
+- [ ] Recap on Logistic Regression
+  - [ ] Logistic Mathematical Function
+  - [ ] Affine Transformation
+  - [ ] Introduce Concept of a Neuron / Perceptron
+  - [ ] Forward Pass
+  - [ ] Backward Pass
 - [ ] Implement and explain SoftMax regression.
+  - [ ] An Intuition Bridging Logistic and Softmax regression
+  - [ ] Forward Pass
+  - [ ] Backward Pass
 
 ### 3. Vanilla Neural Networks
 #### 3.1 Overview of Neural Network Flow
