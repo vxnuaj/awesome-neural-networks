@@ -69,8 +69,8 @@ $\sigma(20) = \frac{1}{1.0000000020612}$
 $\sigma(20) = .99999999793$ 
 
 </div>
-And if we want to reach the intermediary value, $.5$, we can define the input as $0$:
 
+And if we want to reach the intermediary value, $.5$, we can define the input as $0$:
 
 <div align = 'center'>
 
@@ -79,7 +79,7 @@ $\sigma(0) = \frac{1}{1 + e^{- (0)}}$
 $\sigma(0) = \frac{1}{1 + 1}$
 
 $\sigma(0) = \frac{1}{2} = .5$
-
-<div>
+</div>
 
 Pretty simple.
+
