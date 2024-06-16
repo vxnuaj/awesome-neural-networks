@@ -36,6 +36,8 @@ Within this function, as the denominator grows ever-large, it's final output dim
 
 As an example of a near $0$ output, let's take an input $x$ that's extremely negative (at least "extreme" in terms of $\sigma$), for example $-20$:
 
+\(1+1)\
+
 $$
 \sigma(-20) = \frac{1}{1 + e^{- (-20)}} \newline
 \sigma(-20) = \frac{1}{1 + e^{20}} \\~\\
