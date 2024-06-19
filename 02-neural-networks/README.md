@@ -65,7 +65,7 @@ The rationale behind this being that $\sigma$ can prove to be unstable for deep 
 
 <div = align= 'center'>
 
-$for \: each \: neuron,\:n,\: in\: hidden \: layer:$
+$for$&nbsp;$each$&nbsp;$neuron$,&nbsp;$n$,&nbsp;$in$&nbsp;$hidden$&nbsp;$layer:$
 
 $z_1^n = w_1^nX + b_1^n$
 
@@ -77,7 +77,7 @@ Then, the outputs of the hidden layer, $A_1$ in vectorized form for all neurons 
 
 <div align = 'center'>
 
-$for \; each \: neuron,\:n, \:in \:output \: layer$
+$for$&nbsp;$each$&nbsp;$neuron$,&nbsp;$n$,&nbsp;$in$&nbsp;$output$&nbsp;$layer:$
 
 $z_2^n = w_2^nA_1 + b_2^n$
 
@@ -196,6 +196,17 @@ To compute the gradient $\frac{\partial L}{\partial W_2}$ during the backward pa
 > [!NOTE]
 > *This is where linear algebra might come in handy, read more on matrix multiplication and other common linear algebra operations [here](https://www.quantstart.com/articles/matrix-algebra-linear-algebra-for-deep-learning-part-2/).*
 
+In practice, you'll want to average the gradient of each parameter over the total number of samples in each forward pass.
+
+So given that we're already taking the matrix multiplication of $(A_2 - Y_{onehot})$ with $A_1^T$, all that's left is a division by the number of samples given that the matrix multiplication already includes an implicit $\sum$.
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{W_2} * \frac{1}{m}, m = sample$&nbsp;$size$
+
+</div>
+
+
 We can calculate $\frac{L(\hat{Y}, Y)}{∂B_2}$ in a similar manner.
 
 Given the equation in the forward pass:
@@ -216,5 +227,88 @@ $\frac{L(\hat{Y}, Y)}{B_2} = (A_2 - Y_{onehot}) \cdot 1$
 
 $\frac{L(\hat{Y}, Y)}{B_2} = (A_2 - Y_{onehot})$
 
+</div>
+
+Again in practice, we'd want to take the average the gradients of each parameter over the total number of samples in each forward pass.
+
+In this case, given that we aren't computing a matrix multiplication, we can just apply a $\sum$ and divide by number of samples, $m$. Also note, that given the dimensions of the gradient, $\frac{L(\hat{Y}, Y)}{B_2}$, being $(n_{in}, samples)$, we'd want to sum over the second dimension of the matrix, $samples$ to properly average the gradients for each neuron.
+
+If $m$ is defined as our total $samples$, this may look as:
+
+> [!NOTE]
+> *I'm combining the math, with NumPy's ability to specify the axis to sum over and whether we want to keep the dimensions when performing `np.sum`.*
+
+<div align = 'center'>
+<em>Pseudocode:</em> <br><br>
+
+$(\frac{1}{m}) * \sum(\frac{L(\hat{Y}, Y)}{B_2}, axis = 1, keepdims = true)$
 
 </div>
+
+I'll be referring to $\frac{L(\hat{Y}, Y)}{W_2}$, $\frac{L(\hat{Y}, Y)}{B_2}$, and $\frac{L(\hat{Y}, Y)}{Z_2}$ as $∂W_2$, $∂B_2$, and $∂Z_2$ respectively to keep things simple
+
+Now that the gradients of the loss with respect to the parameters in the outer layer are computed, we can get the gradients with respect to the parameters in the ***hidden layer***.
+
+The gradients with respect to $W_1$ will look as:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{W_1} = (\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂W_1})$
+
+</div>
+
+Given that we already know $∂Z_2$, we can simplify as:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{W_1} = (A_2 - Y_{onehot})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂W_1})$
+</div>
+
+Now, $\frac{∂Z_2}{∂A_1}$, given the original equation of the forward pass, $Z_2 = W_2A_1 + B_2$, can be simplified as follows:
+
+<div align = 'center'>
+
+$Z_2 = W_2A_1 + B_2$
+
+$\frac{∂Z_2}{∂A_1} = W_2$
+
+</div>
+
+
+Then $\frac{∂A_1}{∂Z_1}$ can be calculated as the gradient of the $ReLU$ activation with respect to $Z_1$. 
+
+<div align = 'center'>
+
+$\frac{∂ReLU}{∂Z_1} = \begin{cases} 1, Z_1 > 0 \\ 0, Z_1 < 0\end{cases}$
+</div>
+
+We'll call this $∂ReLU(Z_1)$ to keep things simpler.
+
+Finally, $\frac{∂Z_1}{∂W_1}$, given the equation for $Z_1$ in the forward pass, $Z_1 = W_1X + B_1$, can be calculated as follows:
+
+<div align = 'center'>
+
+$Z_1 = W_1X + B_1$
+
+$\frac{∂Z_1}{∂W_1} = X$
+
+</div>
+
+So putting everything together, our final gradient, $\frac{L(\hat{Y}, Y)}{W_1}$, looks as:
+
+<div align = 'center>
+
+$\frac{L(\hat{Y}, Y)}{W_1} = (\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂W_1})$
+
+$\frac{L(\hat{Y}, Y)}{W_1} =1$
+
+</div>
+
+While the gradients with respect to $B_1$ will looks as:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{B_1} = (\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂B_1})$
+
+</div>
+
