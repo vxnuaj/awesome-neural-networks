@@ -133,6 +133,16 @@ $L(\hat{Y}, Y) = Y_{onehot} * ln(\hat{Y})$<br><br>
 
 ### the backpropagation
 
+> [!NOTE]
+> *We'll be going pretty heavy into calculus and linear algebra here. It's
+> important to understand the mathematical foundations, at least that is if you
+> truly want to become knowledgeable in deep learning.*
+>
+>*If you know the first principles, you'll know how to build creatively from them,
+> to build novel ideas.*
+>
+> *Andrej Karparthy put out a more thorough rationale of why you should become a "backprop ninja", read it [here](https://karpathy.medium.com/yes-you-should-understand-backprop-e2f06eab496b)*
+
 Just as prior, backpropagation involes the calculation of the gradients of the loss, $L(\hat{Y}, Y)$, with respect to the given parameters, in this case being $W_1$, $B_1$, $W_2$, and $B_2$.
 
 > [!NOTE]
@@ -182,11 +192,11 @@ the gradient, $\frac{∂Z_2}{∂W_2}$ ends up being equal to $A_1$, given that t
 > [!NOTE]
 > *If you've previously learnt calculus, this might come off as fairly easy, which it can be at times.* 
 
-So ultimately our equation for $\frac{L(\hat{Y}, Y)}{∂W_2}$ will look like:
+So ultimately our equation for $\frac{∂L(\hat{Y}, Y)}{∂W_2}$ will look like:
 
 <div align = 'center'>
 
-$\frac{L(\hat{Y}, Y)}{W_2} = (A_2 - Y_{onehot}) \cdot A_1^T$
+$\frac{∂L(\hat{Y}, Y)}{∂W_2} = (A_2 - Y_{onehot}) \cdot A_1^T$
 
 </div>
 
@@ -310,15 +320,23 @@ $\frac{L(\hat{Y}, Y)}{W_1} = (\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(
 
 $\frac{L(\hat{Y}, Y)}{W_1} = ((W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)) \cdot X^T$
 
-$\frac{L(\hat{Y}, Y)}{W_1} = ∂Z_1 \cdot X^T$
+$∂W_1 = \frac{L(\hat{Y}, Y)}{W_1} = ∂Z_1 \cdot X^T$
 
 </div>
 
 Just as prior, we're transposing $X$ to ensure that it's dimensions are in alignment with $(W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)$ or $∂Z_1$ for the matrix multiplication.
 
+Just as before, we need to average this gradient over the total number of samples in the forward pass. This can be done by purely dividing by the total number of samples, $m$, as the matrix multiplication involved an implicit $\sum$.
+
+<div align = 'center'>
+
+$∂W_1 = \frac{∂W_1}{m}$
+
 </div>
 
-Now we can compute the gradients of the losswith respect to $B_1$ will looks as:
+Now we can compute the gradients of the loss with respect to $B_1$ in a very similar manner.
+
+Note the gradient with respect to $∂B_1$ below.
 
 <div align = 'center'>
 
@@ -326,3 +344,58 @@ $\frac{L(\hat{Y}, Y)}{B_1} = (\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(
 
 </div>
 
+It's very similar to the above computation of $∂W_1$ with the difference being in that we calculate $\frac{∂Z_1}{∂B_1}$ instead of $\frac{∂Z_1}{∂W_1}$ at the end.
+
+This can be computed as:
+
+<div align = 'center'>
+
+$Z_1 = W_1X + B_1$
+
+$\frac{∂Z_1}{∂B_1} = 1$
+
+</div>
+
+So essentialy, $\frac{∂Z_1}{∂B_1}$ simplifies as:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{B_1} = (\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂B_1})$
+
+$∂B_1 = \frac{L(\hat{Y}, Y)}{B_1} = ∂Z_1 \cdot 1$
+</div>
+
+Again, we must average the gradient $∂B_1$ over the total number of samples, $m$, in our dataset, which can be done as:
+
+> [!NOTE]
+> *As before, I'm combining the math, with NumPy's ability to specify the axis to sum over and whether we want to keep the dimensions when performing `np.sum`.*
+
+<div align = 'center'>
+
+<em style = 'font-size: 14px'> Pseudocode</em><br><br>
+$∂B_1 = \frac{1}{m} * \sum(∂B_1, axis = 1, keepdims = True)$
+</div>
+
+Again, we're doing so over $axis = 1$, as the first axis specifies the number of samples in our dataset.
+
+Now putting this entire process together, the computation for the gradients looks as:
+
+<div align = 'center'>
+
+$∂Z_2 =  \frac{∂L(\hat{Y}, Y)}{∂Z_2} = (A_2 - Y_{onehot})$
+
+$∂W_2 = \frac{1}{m} * ((\frac{∂L(\hat{Y}, Y)}{∂Z_2})(\frac{∂Z_2}{∂W_2})) = \frac{1}{m} * ((A_2 - Y_{onehot}) \cdot A_1^T)$
+
+$∂B_2 = \frac{1}{m} * \sum((\frac{∂L(\hat{Y}, Y)}{∂Z_2})(\frac{∂Z_2}{∂W_2})) = \frac{1}{m} * \sum(A_2 - Y_{onehot}, axis = 1, keepdims = True)$
+
+$∂Z_1 = (\frac{∂L(\hat{Y}, Y)}{∂Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1}) = (W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)$
+
+$∂W_1 = \frac{1}{m} * ((\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂W_1})) =  \frac{1}{m} * (((W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)) \cdot X^T)$
+
+
+$∂B_1 = \frac{1}{m} * \sum((\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂B_1})) = \frac{1}{m} * \sum((W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1), axis = 1, keepdims = True)$ <br>
+
+<em>The more simpler derivations, being rightmost</em>
+</div>
+
+This might seem very verbose right now, but it'll look extremely simple in code. If you can fully understand this, you'll have absolutely no trouble implementing this in code because you'll have an exceptional understanding of the foundations.
