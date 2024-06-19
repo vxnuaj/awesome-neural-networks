@@ -26,7 +26,7 @@ Here's a diagram for reference:
 
 <div align = 'center'>
 <img align = 'center' src = '../util_images/nn.png' width = 450></img><br><br>
-<em style = 'font-size:13px'>Note: Most definitely, <b>not to scale</b></em>
+<span style = 'font-size:13px'>Note: Most definitely, <b>not to scale</b></span>
 </div>
 
 <br>
@@ -100,7 +100,7 @@ This value $pred$, given that your labels, $Y$, are encoded into integer represe
 <div align = 'center'>
 
 $accuracy = \frac{\sum{pred == Y}}{samples}$ <br><br>
-<em style = 'font-size: 12px'>Pseudo code for computing accuracy, where $\hat{Y} == Y$ would return a boolean value.</em>
+<span style = 'font-size: 12px'>Pseudo code for computing accuracy, where $\hat{Y} == Y$ would return a boolean value.</span>
 </div>
 
 > [!IMPORTANT]
@@ -128,7 +128,7 @@ Now again, as prior, we can compute the loss using the, ***categorical cross ent
 <div align = 'center'>
 
 $L(\hat{Y}, Y) = Y_{onehot} * ln(\hat{Y})$<br><br>
-<em style = 'font-size: 12px'>Again, where $Y_{onehot}$ are the one-hot encoded labels.</em>
+<span style = 'font-size: 12px'>Again, where $Y_{onehot}$ are the one-hot encoded labels.</span>
 </div>
 
 ### the backpropagation
@@ -157,7 +157,7 @@ For the parameters of the first layer, this will look as:
 $\frac{L(\hat{Y}, Y)}{\theta_1} = (\frac{L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂\theta_1})$
 </div>
 
-This might seem complicated at first, but can all be dumbed down into simpler derivations.
+This might sespan complicated at first, but can all be dumbed down into simpler derivations.
 
 When computing, $\frac{L(\hat{Y}, Y)}{\theta_2} = (\frac{L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂\theta_2})$, we'd need to find $\frac{∂L(\hat{Y},{Y})}{∂Z_2}$ prior.
 
