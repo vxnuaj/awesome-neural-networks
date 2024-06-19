@@ -1,3 +1,10 @@
+'''
+
+Implementation of Logistic Regression on dataset: "datasets/logistic_regression_dataset.csv"
+
+'''
+
+
 import numpy as np
 import pandas as pd
 

@@ -54,6 +54,7 @@ So this is why I built this repo, to build foundational knowledge for myself and
   - [ ] Explain Forward Pass.
   - [ ] Explain Backward Pass.
   - [ ] Explain Weight Update.
+  - [ ] Explain Gradient Descent + Mini Batch Descent
 
 #### 3.2 Different Activation Functions
 - [ ] Implement and explain Sigmoid.
@@ -78,9 +79,6 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 #### 3.7 Full Neural Network Flow Explanation and Code
 - [ ] Provide a full explanation and code for the complete neural network flow.
-
-### 4. Neural Networks with Mini-Batch Descent
-- [ ] Implement and explain neural networks with Mini-Batch Gradient Descent.
 
 ### 5. Neural Networks with Regularization
 #### 5.1 L1 Regularization

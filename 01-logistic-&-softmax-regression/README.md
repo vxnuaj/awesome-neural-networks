@@ -132,7 +132,11 @@ $\hat{Y} = A = \sigma(Z) = \frac{1}{1 + e^{-Z}}$
 
 It's important to note that the multiplication of $W$ and $X$ is the matrix multiplication of each, not an element wise multiplication, at least when $W$ and $X$ are vectorized.
 
-At this point, it's useful to introduce the **artifiical neuron**.
+It's also important to know the role of the activation function in a such a model. $\sigma$ is a non-linear function, meaning it's inputs don't correlate to it's outputs. 
+
+Therefore, you aren't bounded to building a **simple linear classifier** that's unable to learn complex features. The introduction of the non-linear activation function allows for a model to learn non-linear features.
+
+Now, at this point, it's useful to introduce the **artificial neuron**.
 
 > *Although, calling it **neuron** can prove to be misleading as it's computation doesn't really resemble the compelxity of a real **neuron***
 
@@ -173,6 +177,8 @@ To get a final result for binary classification, which is what a logistic regres
 $pred = \begin{cases} 1, p > .5 \\ 0, p < .5 \end{cases}$
 
 </div>
+
+If your labels are originally defined as words, say **cat** and **dog**, you'd typically want to encode the words to be mapped to the numbers $0$ and $1$, so you can accurately compute the **accuracy** and **loss** (the amount of error).
 
 This effectively allows us to classify the predictions of the model to one of the available binary classes.
 
@@ -374,6 +380,24 @@ So in this case, when you take the summation of $e^z$, you'd sum over the first 
 
 So ultimately to sum things up, the softmax equation, $\frac{e^z}{\sum e^z}$, allows us to normalize the output logit, $z$, to a probability within the range $[0, 1]$, which can be easily interpretable as a percentage value (%).
 
+In practice, given that the final output is represented in terms of probability, to get a true prediction during inference or testing, you'd want to take the $argmax$ of the output vector, which essentially returns the index of the highest value within the output vector.
+
+For example, say the output, denoted as $\hat{Y}$, was a vector of:
+
+<div align = 'center'>
+
+$[.12, .8, .08]$
+
+</div>
+
+Taking the $argmax$ of the vector, $\hat{Y}$, would return $1$, denoting the index of the class with the highest probability.
+
+If your labels, as an example, $[cat, dog, bear]$, are encoded into integer representations, $[0,1,2]$  the prediction $1$ will be able to represent the $2$nd class of your dataset (given that indices typically begin with $0$).
+
+So the final prediction would be **dog** given that it's the **2nd** class.
+
+### modifying the loss function
+
 We can also modify the loss function to a more simplistic function called ***categorical cross entropy*** which in turn, generalizes the loss calculation to all our classes.
 
 This can be defined as:
@@ -403,9 +427,9 @@ Now, here's a visual for easier understanding of the flow of the softmax regress
 
 <br>
 
-The computation of the softmax doesn't seem to different from the original logistic regression in terms of flow, besides the new activation function and introduction of the one hot encoding.
+The computation of the softmax isn't too different from the original logistic regression in terms of flow, besides the new activation function, modification to the loss, and introduction of the one hot encoding.
 
-It can be defined the same as (with of course, the new function, $\tilde{\sigma}$):
+It can be defined as (with of course, the new function, $\tilde{\sigma}$):
 
 <div align = 'center'>
 
