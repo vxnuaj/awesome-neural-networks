@@ -190,8 +190,7 @@ $\frac{L(\hat{Y}, Y)}{W_2} = (A_2 - Y_{onehot}) \cdot A_1^T$
 
 </div>
 
-> [!NOTE]
-> 
-> *We're taking the transpose of $$A_1^T$$, as in the forward pass we've previously computed a matrix multiplication with $$W$$, which implicitly involves a matrix transpose.*
+
+> *We're taking the transpose of $A_1^T$, as in the forward pass we've previously computed a matrix multiplication with $W$, which implicitly involves a matrix transpose.*
 > 
 > *This is where linear algebra might come in handy*
