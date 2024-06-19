@@ -320,6 +320,7 @@ This is typically done for multiple iterations, as much as need be, as the more 
 
 So to put this all together, one pass of gradient descent for `logistic regression` can be mathematically defined (with some pseudocode) as:
 
+> [!IMPORTANT]
 >*Where one epoch is a single pass through your entire dataset.*
 
 <div align = 'center'>

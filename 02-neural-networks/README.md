@@ -1,8 +1,9 @@
 ## into neural nets
 
-> *[Code](nn.py)*
+> *[Vanilla Neural Network Code](nn.py) | [Mini-Batch Neural Network Code](MiniBatchNN.py)*
 
-Note that the foundations foundations of the [logistic & softmax regression](../01-logistic-&-softmax-regression/README.md) serve as similar foundations for the architectures of neural networks, the difference being that neural networks are **deep** and **complex**.
+> [!NOTE]
+> *The foundations of the [logistic & softmax regression](../01-logistic-&-softmax-regression/README.md) serve as similar foundations for the architectures of neural networks, the difference being that neural networks are **deep** and **complex**.*
 
 ### the architecture
 
@@ -392,10 +393,113 @@ $∂Z_1 = (\frac{∂L(\hat{Y}, Y)}{∂Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}
 
 $∂W_1 = \frac{1}{m} * ((\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂W_1})) =  \frac{1}{m} * (((W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)) \cdot X^T)$
 
-
 $∂B_1 = \frac{1}{m} * \sum((\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂B_1})) = \frac{1}{m} * \sum((W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1), axis = 1, keepdims = True)$ <br>
 
 <em>The more simpler derivations, being rightmost</em>
 </div>
 
 This might seem very verbose right now, but it'll look extremely simple in code. If you can fully understand this, you'll have absolutely no trouble implementing this in code because you'll have an exceptional understanding of the foundations.
+
+### weight update
+
+Now, we can compute the weight update for any given parameter, $\theta_l$, using the same formula as prior:
+
+<div align = 'center'>
+
+$\theta = \theta - \alpha * ∂\theta$<br>
+<span style = "font-size: 13px"> Where $\alpha$ is the learning rate</span>
+</div>
+
+So for each parameter, $W_1$, $B_1$, $W_2$, and $B_2$, the updates would look as:
+
+<div align = 'center'>
+
+$W_1 = W_1 - \alpha * ∂W_1$
+
+$B_1 = B_1 - \alpha * ∂B_1$
+
+$W_2 = W_2 - \alpha * ∂W_2$
+
+$B_2 = B_2 - \alpha * ∂B_2$<br>
+</div>
+
+### gradient descent
+
+Just as before, one forward and backward pass, meaning everything we've just computed, completes one pass of gradient descent.
+
+So to put it all together, it looks as:
+
+<div align = 'center'>
+
+$for$&nbsp;$epoch$&nbsp;$in$&nbsp;$range(epochs):$
+
+$Z_1 = W_1X + B_1$ 
+
+$A_1 = ReLU(Z_1)$
+
+$Z_2 = W_2A_1 + B_2$
+
+$A_2 = \tilde{\sigma}(Z_2)$
+
+$L(\hat{Y}, Y) = Y_{onehot} * ln(\hat{Y})$
+
+$∂Z_2 =  (A_2 - Y_{onehot})$
+
+$∂W_2  = \frac{1}{m} * ((A_2 - Y_{onehot}) \cdot A_1^T)$
+
+$∂B_2 = \frac{1}{m} * \sum(A_2 - Y_{onehot}, axis = 1, keepdims = True)$
+
+$∂Z_1 = (W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)$
+
+$∂W_1 =  \frac{1}{m} * ((∂Z_1 * ∂ReLU(Z_1)) \cdot X^T)$
+
+$∂B_1 = \frac{1}{m} * \sum(∂Z_1, axis = 1, keepdims = True)$
+
+</div>
+
+> [!IMPORTANT]
+> *If you're curious to see what has been covered so far in code, check it out [here](nn.py)!*
+
+### mini-batch gradient descent
+
+There's something called ***mini-batch gradient descent***, where a single pass of gradient descent and the respective training step, isn't representative of your entire dataset. 
+
+Mini-Batch Gradient Descent is similar to Gradient Descentin the algorithmic sense, with the difference that it processes smaller batches of an entire dataset prior to taking a training step, rather than processing the entire dataset at once and then taking a training step.
+
+So given that an ***epoch*** is an entire pass through your dataset, an model can take ***multiple training steps*** prior to finishing an epoch.
+
+This can improve computation time and improve learning speed of a model, especially when there are a large number of training samples in your dataset.
+
+For some intuition, say you have training set $X$.
+
+$X = (784, 60000)$, where there are $784$ features and $60000$ samples.
+
+We can split up $X$ into $6$ mini-batches of $10000$ samples each:
+
+<div align = 'center'>
+
+$X^{1} = (784, 10000)$
+
+$X^{2} = (784, 10000)$
+
+$X^{3} = (784, 10000)$
+
+$X^{4} = (784, 10000)$
+
+$X^{5} = (784, 10000)$
+
+$X^{6} = (784, 10000)$
+</div>
+
+To then feed each $X^{t}$ in once and taking a training step in between each, then restarting from $X^{1}$ once more.
+
+The trend of the loss function will be not be as smooth when compared to processing larger or the entire batch at once, due to the fact that within each forward pass, your model is operating on new unseen samples, but ultimately if done right, the value of the loss should still trend downwards.
+
+Another benefit of processing data in mini-batches is the tiny bit of regularization it provides, to keep your model from overfitting on your dataset, though it isn't much.
+
+Some principles to keep in mind when choosing a mini-batch size are:
+
+- If you have a small training set, where samples, $m$, is $ < ~2000$ make use of full-batch gradient descent instead
+- Typical mini-batch sizes are on orders of two, ${32, 64, 128, 256, etc}$, given how modern computer chips are built, process data like this is more optimal for ensuring you get the biggest efficiency.
+- Make sure your mini-batch fits in your CPU / GPU nmemory
+- If you're using BatchNorm ( which we'll go over later ), very small batches can lead to poor estimates of batch statistics ($\mu$ and $\beta$).
