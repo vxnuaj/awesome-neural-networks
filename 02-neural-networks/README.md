@@ -190,7 +190,31 @@ $\frac{L(\hat{Y}, Y)}{W_2} = (A_2 - Y_{onehot}) \cdot A_1^T$
 
 </div>
 
+To compute the gradient $\frac{\partial L}{\partial W_2}$ during the backward pass, the dimensions of the matrices must match for the multiplication: $(A_2 - Y_{onehot}) \cdot A_1^T$, which is why we take the transpose of $A_1$.
 
-> *We're taking the transpose of $A_1^T$, as in the forward pass we've previously computed a matrix multiplication with $W$, which implicitly involves a matrix transpose.*
-> 
-> *This is where linear algebra might come in handy*
+
+> [!NOTE]
+> *This is where linear algebra might come in handy, read more on matrix multiplication and other common linear algebra operations [here](https://www.quantstart.com/articles/matrix-algebra-linear-algebra-for-deep-learning-part-2/).*
+
+We can calculate $\frac{L(\hat{Y}, Y)}{∂B_2}$ in a similar manner.
+
+Given the equation in the forward pass:
+
+<div align = 'center'>
+
+$Z_2 = W_2A_1 + B_2$
+
+</div>
+
+the gradient, $\frac{∂Z_2}{∂B_2}$ ends up being equal to $1$, given that the derivative of $B_2$ is $1$ and $W_2A_1$ cancels out as it's a constant in reference to the gradient of $B_2$.
+
+Then  $\frac{L(\hat{Y}, Y)}{∂B_2}$ is equal to:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{B_2} = (A_2 - Y_{onehot}) \cdot 1$
+
+$\frac{L(\hat{Y}, Y)}{B_2} = (A_2 - Y_{onehot})$
+
+
+</div>
