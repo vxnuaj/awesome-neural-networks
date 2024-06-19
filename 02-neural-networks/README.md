@@ -157,11 +157,41 @@ For the parameters of the first layer, this will look as:
 $\frac{L(\hat{Y}, Y)}{\theta_1} = (\frac{L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂\theta_1})$
 </div>
 
-This might sespan complicated at first, but can all be dumbed down into simpler derivations.
+This might seem complicated at first, but can all be dumbed down into simpler derivations, which can be understood with basic knowledge of calculus..
 
-When computing, $\frac{L(\hat{Y}, Y)}{\theta_2} = (\frac{L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂\theta_2})$, we'd need to find $\frac{∂L(\hat{Y},{Y})}{∂Z_2}$ prior.
+When computing, $(\frac{∂L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂\theta_2})$, we'd need to find $\frac{∂L(\hat{Y},{Y})}{∂Z_2}$ prior.
 
 Now $\frac{∂L(\hat{Y},{Y})}{∂Z_2}$, can be simplified to $A_2 - Y_{onehot}$
 > [!NOTE]
 > *To keep things simple, I won't be going over this derivation here.*
 
+Given this, what's left is finding the value of $\frac{∂Z_2}{∂\theta_2}$, which differs depending on the parameter we're regarding to.
+
+Let's say we try to calculate the gradient with respect to $W_2$.
+
+Given the original equation in the forward pass:
+
+<div align = 'center'>
+
+$Z_2 = W_2A_1 + B_2$
+
+</div>
+
+the gradient, $\frac{∂Z_2}{∂W_2}$ ends up being equal to $A_1$, given that the derivative of $W_2$ is $1$ and $B_2$ cancels out as it's a constant in reference to the gradient.
+
+> [!NOTE]
+> *If you've previously learnt calculus, this might come off as fairly easy, which it can be at times.* 
+
+So ultimately our equation for $\frac{L(\hat{Y}, Y)}{∂W_2}$ will look like:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{W_2} = (A_2 - Y_{onehot}) \cdot A_1^T$
+
+</div>
+
+> [!NOTE]
+> 
+> *We're taking the transpose of $A_1^T$, as in the forward pass we've previously computed a matrix multiplication with $W$, which implicitly involves a matrix transpose.*
+> 
+> *This is where linear algebra might come in handy*
