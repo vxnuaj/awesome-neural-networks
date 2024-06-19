@@ -1,5 +1,7 @@
 # logistic & softmax regression
 
+> *[Logistic Regression Code](logistic.py) | [Softmax Regression Code](softmax.py)*
+
 If you're familiar with [linear regression](https://www.youtube.com/watch?v=7ArmBVF2dCs), a model where you aim to construct a line of best fit to a set of linear data points ($\vec{X}$) through the equation, $Y = WX + B$, and by iteratively adjusting the model parameters ($\vec{W}$ and $\vec{B}$), it's important to **not**, I repeat, **not,** get logistic or softmax regression confused with fitting a line of to a set of datapoints.
 
 
@@ -127,6 +129,8 @@ $\hat{Y} = A = \sigma(Z) = \frac{1}{1 + e^{-Z}}$
 
 *where our activation, $A$, can be defined by $\hat{Y}$, denoting the prediction the logistic regression makes after a forward pass.*
 </div>
+
+It's important to note that the multiplication of $W$ and $X$ is the matrix multiplication of each, not an element wise multiplication, at least when $W$ and $X$ are vectorized.
 
 At this point, it's useful to introduce the **artifiical neuron**.
 
@@ -261,16 +265,16 @@ So in the case of logistic regression, where we use the binary cross entropy los
 
 This calculation of $∂Z$ implicitly computes $∂\hat{Y}$, so we can avoid the stand along calculation of $∂\hat{Y}$.
 
-$∂Z = \frac{∂L(Y, \hat{Y})}{∂Z} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z}) = Y - \hat{Y}$
+$∂Z = \frac{∂L(Y, \hat{Y})}{∂Z} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z}) = \hat{Y} - Y$
 
 > *To keep things simple, we won't be deriving the full gradient with respect to $Z$ here.*
 
 So referring back to our original equation of the chain rule, 
 $\frac{∂L(Y, \hat{Y})}{∂\theta} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z})(\frac{∂Z}{∂\theta})$, now that we have $∂Z$, we can use the chain rule to calculate the gradients with respect to $W$ and $B$.
 
-$∂W = (∂Z)(\frac{∂Z}{∂W}) = (Y - \hat{Y}) \cdot X^T$
+$∂W = (∂Z)(\frac{∂Z}{∂W}) = (\hat{Y} - Y) \cdot X^T$
 
-$∂B = (∂Z)(\frac{∂Z}{∂B}) = (Y - \hat{Y}) \cdot 1$
+$∂B = (∂Z)(\frac{∂Z}{∂B}) = (\hat{Y} - Y) \cdot 1$
 
 Now, these gradients $∂W$ and $∂B$, will play an important role in the update rule of our model, finalizing one pass of gradient descent.
 
@@ -296,6 +300,134 @@ $B = B - \alpha \cdot \frac{∂L(Y, \hat{Y})}{∂B}$
 
 </div>
 
-Up until now, we've computed a single pass of gradient descent, comprised of a ***forward pass*** and a ***backward pass***.
+This weight update allows for the parameters $W$ and $B$ to be updated in such a way that the model begins to minimize the value of loss, optimizing for a global minimum, ultimately increasing it's accuracy as a byproduct.
+
+So, up until now, we've computed a single pass of *gradient descent*, comprised of a ***forward pass*** and a ***backward pass***.
 
 ### gradient descent
+
+Gradient descent is built upon the foundations just covered, the forward pass, the backward pass, and the weight updates.
+
+One iteration of gradient descent is represents one pass through this entire process.
+
+This is typically done for multiple iterations, as much as need be, as the more iterations gone through a pass of gradient descent,  the more 'fit' or trained a model will typically be to a dataset.
+
+So to put this all together, one pass of gradient descent for `logistic regression` can be mathematically defined (with some pseudocode) as:
+
+>*Where one epoch is a single pass through your entire dataset.*
+
+<div align = 'center'>
+
+$for \:\: epoch \:\: in \:\: range(epochs):$
+
+$Z = WX + B$
+
+$\hat{Y} = A = \sigma(Z) = \frac{1}{1 + e^{-Z}}$
+
+$Loss = - Y \cdot ln(\hat{Y}) - (1-Y) \cdot ln(1-\hat{Y})$
+
+
+$∂Z = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z}) = \hat{Y} - Y$
+3
+$∂W = (∂Z)(\frac{∂Z}{∂W}) = (\hat{Y} - Y) \cdot X^T$
+
+$∂B = (∂Z)(\frac{∂Z}{∂B}) = (\hat{Y} - Y) \cdot 1$
+
+$W = W - \alpha \cdot \frac{∂L(Y, \hat{Y})}{∂W}$
+
+$B = B - \alpha \cdot \frac{∂L(Y, \hat{Y})}{∂B}$
+
+$return \:\: W, B$
+</div>
+
+Now, to effectively trian your model, you'll need to run it for a set number of epochs until it converges to your the global optima of the loss for your datset.
+
+**You can check out a coded implementation [here](logistic.py), to see how you might be able to practically build a model out.**
+
+## into softmax regression
+
+> *[Softmax Regression Code](softmax.py)*
+
+Softmax regression is essentially an extension of logistic regression that aims to classify the set of given samples to more than 2 classes, essentially now performing multiclass classification, not binary classification.
+
+This extension is purely brought upon by a modification to the $\sigma$ activation function that generalizes it to computing the probability of multiple classes being the correct label $Y$.
+
+Where you see the $\sigma$ being defined as $\frac{1}{1 + e^{-z}}$, we can now call our new activation function, now called the ***softmax*** activtaion function, defined as:
+
+<div align = 'center'>
+
+$\tilde{\sigma}(z) = \frac{e^z}{\sum{e^z}}$<br>
+<em style = 'font-size: 12px'>$\tilde{\sigma}$ being the softmax</em>
+</div>
+
+The modification to the $\sigma$ equation, to turn it into ***softmax*** ($\tilde{\sigma}$), allows for the computation of the probabilities for multiple classes.
+
+The calculation of $e^z$ in the numerator, computes the probability for each class within $z$ while the summation of $e^z$ as $\sum{e^z}$, calculates the sums of all probabilities for all classes within $z$.
+
+The division of the $e^z$ by $\sum{e^z}$ allows for the calculation of the normalized logits / probabilities, which our model calculated, that a given sample belongs to a given class indexed by $z$.
+
+Let's say the output logit, $z$, has the dimensions of $(classes, samples)$, where each value along the first axis, $classes$, denotes the unnormalized probability of a sample belonging to a given class.
+
+So in this case, when you take the summation of $e^z$, you'd sum over the first axis as you want to calculate the probabilities over the number of total classes
+
+> *Of course, in practice you might have $(samples, classes)$ instead, in which you'd sum over the second axis instead.*
+
+So ultimately to sum things up, the softmax equation, $\frac{e^z}{\sum e^z}$, allows us to normalize the output logit, $z$, to a probability within the range $[0, 1]$, which can be easily interpretable as a percentage value (%).
+
+We can also modify the loss function to a more simplistic function called ***categorical cross entropy*** which in turn, generalizes the loss calculation to all our classes.
+
+This can be defined as:
+
+<div align = 'center'>
+
+$L(\hat{Y}, Y_{onehot}) = Y_{onehot} \cdot ln(\hat{Y})$
+
+</div>
+
+The difference here is that $Y$, rather than taking the form of raw labels, takes the form of one hot encodings of the labels $Y$. 
+
+Essentially, a one hot encoding is a vector of $0$s and a singular $1$. The index where the singular $1$ is located, identifies our true label.
+
+If I had the one hot encoding of $[0, 0, 0, 1]$, my label would be defined as $3$, as the singular $1$ is located at the $3$rd index of the one hot encoding.
+
+If I had the one hot encoding of $[1, 0, 0, 0]$, my label woudl be defined as $0$, as the singular $1$ is located at the $0$th index of the one hot encoding.
+
+> *Read more about one hot encodings here*
+
+Now, here's a visual for easier understanding of the flow of the softmax regression.
+
+<div align = 'center'>
+<img align = 'center' src = '../util_images/softmaxed.png' width = 450></img><br>
+<em></em>
+</div>
+
+<br>
+
+The computation of the softmax doesn't seem to different from the original logistic regression in terms of flow, besides the new activation function and introduction of the one hot encoding.
+
+It can be defined the same as (with of course, the new function, $\tilde{\sigma}$):
+
+<div align = 'center'>
+
+$for \:\: epoch \:\: in \:\: range(epochs):$
+
+$Z = WX + B$
+
+$\hat{Y} = A =\tilde{\sigma}(Z) = \frac{1}{1 + e^{-Z}}$
+
+$Loss = Y_{onehot} \cdot ln(\hat{Y})$
+
+$∂Z = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z}) = \hat{Y} - Y_{onehot}$
+
+$∂W = (∂Z)(\frac{∂Z}{∂W}) = (\hat{Y} - Y_{onehot}) \cdot X^T$
+
+$∂B = (∂Z)(\frac{∂Z}{∂B}) = (\hat{Y} - Y_{onehot}) \cdot 1$
+
+$W = W - \alpha \cdot \frac{∂L(Y_{onehot}, \hat{Y})}{∂W}$
+
+$B = B - \alpha \cdot \frac{∂L(Y_{onehot}, \hat{Y})}{∂B}$
+
+$return \:\: W, B$
+</div>
+
+**To take a dive into it's implementation, check out the code [here](softmax.py)**

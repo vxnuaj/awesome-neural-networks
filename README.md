@@ -18,11 +18,8 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 ## table of contents
 
-1. [Softmax Regression](#softmax-regression)
+1. [Logistic & Softmax Regression](#softmax-regression)
 
-## a brief history of neural networks
-
-## softmax regression
 
 
 
@@ -35,20 +32,21 @@ So this is why I built this repo, to build foundational knowledge for myself and
 ### 1. A Brief History of Neural Networks
 - [ ] Write an overview of the history and evolution of neural networks.
 
-### 2. SoftMax Regression
-- [ ] Recap on Logistic Regression
+### 2. Logistic SoftMax Regression
+- [X] Recap on Logistic Regression
   - [X] Logistic Mathematical Function
   - [X] Affine Transformation
   - [X] Introduce Concept of a Neuron / Perceptron
   - [X] Forward Pass
   - [X] Loss Function
-  - [ ] Backward Pass
-  - [ ] Weight Update
-  - [ ] Implement Logistic Regression.
-- [ ] Implement and explain SoftMax regression.
-  - [ ] An Intuition Bridging Logistic and Softmax regression
-  - [ ] Forward Pass
-  - [ ] Backward Pass
+  - [X] Backward Pass
+  - [X] Weight Update
+  - [X] Gradient Descent
+  - [X] Implement Logistic Regression.
+  - [X] Implement and explain SoftMax regression.
+  - [X] An Intuition Bridging Logistic and Softmax regression
+  - [X] Forward Pass
+  - [X] Backward Pass
 
 ### 3. Vanilla Neural Networks
 #### 3.1 Overview of Neural Network Flow
