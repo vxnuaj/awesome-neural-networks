@@ -247,11 +247,11 @@ If you're curious to get a look into a code implementation, in `numpy`, this los
 Loss = -Y * np.log(Y_hat) - (1 - Y) * np.log(1 - Y_hat)
 ```
 
-### the backward pass
+### the backpropagation
 
-The backward pass of the model is an essential prerequisite to compute, in order to then allow for a logistic regression model to learn or train by continuously adapting it's weights to minimize the value of the loss function.
+The backward pass, also known as backpropagation, of the model is an essential prerequisite to compute, in order to then allow for a logistic regression model to learn or train by continuously adapting it's weights to minimize the value of the loss function.
 
-The backward pass involves the caluculation of gradients (aka derivatives) of the given loss function with respect to a set of parameters, $\theta$, which in our case, will be $W$ or $B$.
+Backpropagation involves the caluculation of gradients (aka derivatives) of the given loss function with respect to a set of parameters, $\theta$, which in our case, will be $W$ or $B$.
 
 This process is done through the chain rule.
 

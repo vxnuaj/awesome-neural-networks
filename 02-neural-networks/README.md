@@ -49,8 +49,19 @@ In prior single neuron examples, an affine transformation was computed to then b
 
 When we feed an input feature into a neuron in the hidden layer of the network, the same exact process occurs, but per neuron.
 
+In our case though, we'll be replacing the $\sigma$ activation function for a $ReLU$ activation. 
+
+The rationale behind this being that $\sigma$ can prove to be unstable for deep neural networks, given that they're prone to vanishing gradients, and are more expensive to compute given $e$.
+
+### TODO
+- [ ] Add link to activation functions page to serve as an explanation
+
 > [!NOTE]
-> *For the following, it'll be assumed that all inputs, to both the hidden layer and output layer are **vectorized** outputs of a previous layer denoted by a capital variable*
+> *For the following, it'll be assumed that all inputs, to both the hidden layer and output layer are **vectorized** outputs of a previous layer denoted by a capital variable.*
+> 
+> *In this case, the inputs are then matrices of dimensions - $(n_{in}, samples)$- where $n_{in}$ are the number of input features to a given layer*.
+>
+> *To learn more about vectorization, check out this amazing [resource](https://youtu.be/qsIrQi0fzbY).*
 
 <div = align= 'center'>
 
@@ -58,7 +69,7 @@ $for \: each \: neuron,\:n,\: in\: hidden \: layer:$
 
 $z_1^n = w_1^nX + b_1^n$
 
-$a_1^n = \sigma{(z_1^n})$<br><br>
+$a_1^n = ReLU{(z_1^n})$<br><br>
 <em style = 'font-size:12px'>The subscript $1$, denoting the first hidden layer.</em>
 </div>
 
@@ -70,7 +81,7 @@ $for \; each \: neuron,\:n, \:in \:output \: layer$
 
 $z_2^n = w_2^nA_1 + b_2^n$
 
-$a_2^n = \tilde{\sigma}(z_2^n)$
+$\hat{Y} = a_2^n = \tilde{\sigma}(z_2^n)$
 
 </div>
 
@@ -80,12 +91,77 @@ Just as prior in softmax regression, where we take take the $argmax$ of the fina
 
 <div align = 'center'>
 
-$\hat{Y} = argmax(A_2)$
+$pred = argmax(A_2)$
 
 </div>
 
+This value $pred$, given that your labels, $Y$, are encoded into integer representations, can be used to compute an accuracy by averaging the amount of times where $pred = Y$ is true over the number of samples in your dataset
 
+<div align = 'center'>
+
+$accuracy = \frac{\sum{pred == Y}}{samples}$ <br><br>
+<em style = 'font-size: 12px'>Pseudo code for computing accuracy, where $\hat{Y} == Y$ would return a boolean value.</em>
+</div>
+
+> [!IMPORTANT]
+> *When training a neural network, you typically wouldn't use the $argmax$ed values to computed the loss or to compute gradients to train the model. You'd want to use the raw outputs, $A_2$ as a means to calculate the loss and the gradients as it's more representative of the true outputs of the neural network.*
+
+So now, given the above, we can define a full forward pass of a neural network as:
 
 > [!NOTE]
-> *When training a neural network, you typically wouldn't use the $argmax$ed values, for the loss or to compute gradients to train the model. You'd want to use the raw outputs, $A_2$ as a means to calculate the loss and the gradients as it's more representative of the true outputs of the neural network.*
+> ***Note** that from now, all inputs and output values, and paramters will be expressed in [vectorized](https://youtu.be/qsIrQi0fzbY) formats.*
+
+<div align = 'center'>
+
+$Z_1 = W_1X + B_1$ 
+
+$A_1 = ReLU(Z_1)$
+
+$Z_2 = W_2A_1 + B_2$
+
+$A_2 = \tilde{\sigma}(Z_2)$
+
+</div>
+
+Now again, as prior, we can compute the loss using the, ***categorical cross entropy loss function***, just as prior in softmax regression.
+
+<div align = 'center'>
+
+$L(\hat{Y}, Y) = Y_{onehot} * ln(\hat{Y})$<br><br>
+<em style = 'font-size: 12px'>Again, where $Y_{onehot}$ are the one-hot encoded labels.</em>
+</div>
+
+### the backpropagation
+
+Just as prior, backpropagation involes the calculation of the gradients of the loss, $L(\hat{Y}, Y)$, with respect to the given parameters, in this case being $W_1$, $B_1$, $W_2$, and $B_2$.
+
+> [!NOTE]
+> *I'll be interchangeably using $\theta_l$ to denote either parameters at the $l$th layer*
+
+And again, just as prior, this involves the use of the chain rule of calculus.
+
+To compute the gradients with respect to parameters in layer 2, $\frac{∂L(\hat{Y}, Y)}{∂\theta_2}$, and with respect to parameters in layer 1, $\frac{L(\hat{Y}{Y})}{∂\theta_1}$, we'll have to dig all the way back through the chain rule by computing the gradients of earlier variables.
+
+For the parameters of the second layer, this will look as:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{\theta_2} = (\frac{L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂\theta_2})$
+
+</div>
+
+For the parameters of the first layer, this will look as:
+
+<div align = 'center'>
+
+$\frac{L(\hat{Y}, Y)}{\theta_1} = (\frac{L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂\theta_1})$
+</div>
+
+This might seem complicated at first, but can all be dumbed down into simpler derivations.
+
+When computing, $\frac{L(\hat{Y}, Y)}{\theta_2} = (\frac{L(\hat{Y}, Y)}{∂A_2})(\frac{∂A_2}{∂Z_2})(\frac{∂Z_2}{∂\theta_2})$, we'd need to find $\frac{∂L(\hat{Y},{Y})}{∂Z_2}$ prior.
+
+Now $\frac{∂L(\hat{Y},{Y})}{∂Z_2}$, can be simplified to $A_2 - Y_{onehot}$
+> [!NOTE]
+> *To keep things simple, I won't be going over this derivation here.*
 
