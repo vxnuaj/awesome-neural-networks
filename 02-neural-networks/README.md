@@ -35,18 +35,21 @@ Discussing the layers, the left-most layer of this neural network is simply call
 
 This input layer isn't really a layer of the network itself, it's rather a representation of a set of input features to the ***first hidden layer***, where each node is representative of a single input feature.
 
+> [!NOTE]
 > *A single input feature, for example, can be a single pixel value of an image*
 
 ### the forward pass
 
 Now, every single node / input feature within the input layer is fed into every single neuron individually in the first hidden layer.
 
+> [!NOTE]
 > *Typically, the input layer isn't considered as part of the total layer count nor is even called a layer at times. So here, when a "first layer" is mentioned, we'll be referring to the first hidden layer of a neural network, not the input layer*
 
 In prior single neuron examples, an affine transformation was computed to then be fed into an activation function to get a final output.
 
 When we feed an input feature into a neuron in the hidden layer of the network, the same exact process occurs, but per neuron.
 
+> [!NOTE]
 > *For the following, it'll be assumed that all inputs, to both the hidden layer and output layer are **vectorized** outputs of a previous layer denoted by a capital variable*
 
 <div = align= 'center'>
