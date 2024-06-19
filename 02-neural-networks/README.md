@@ -54,7 +54,7 @@ In our case though, we'll be replacing the $\sigma$ activation function for a $R
 The rationale behind this being that $\sigma$ can prove to be unstable for deep neural networks, given that they're prone to vanishing gradients, and are more expensive to compute given $e$.
 
 ### TODO
-- [ ] Add link to activation functions page to serve as an explanation
+- [ ] Add link to activation functions page to serve as an explanation, whenever ReLU is ment ioned
 
 > [!NOTE]
 > *For the following, it'll be assumed that all inputs, to both the hidden layer and output layer are **vectorized** outputs of a previous layer denoted by a capital variable.*
@@ -284,6 +284,14 @@ $\frac{∂ReLU}{∂Z_1} = \begin{cases} 1, Z_1 > 0 \\ 0, Z_1 < 0\end{cases}$
 
 We'll call this $∂ReLU(Z_1)$ to keep things simpler.
 
+Up until now, we've essentially computed the needed components for $\frac{L(\hat{Y}, {Y})}{∂Z_1}$ or $∂Z_1$
+
+<div align = 'center'>
+
+$∂Z_1 = (W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)$
+
+</div>
+
 Finally, $\frac{∂Z_1}{∂W_1}$, given the equation for $Z_1$ in the forward pass, $Z_1 = W_1X + B_1$, can be calculated as follows:
 
 <div align = 'center'>
@@ -296,15 +304,21 @@ $\frac{∂Z_1}{∂W_1} = X$
 
 So putting everything together, our final gradient, $\frac{L(\hat{Y}, Y)}{W_1}$, looks as:
 
-<div align = 'center>
+<div align = 'center'>
 
 $\frac{L(\hat{Y}, Y)}{W_1} = (\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(\frac{∂A_1}{∂Z_1})(\frac{∂Z_1}{∂W_1})$
 
-$\frac{L(\hat{Y}, Y)}{W_1} =1$
+$\frac{L(\hat{Y}, Y)}{W_1} = ((W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)) \cdot X^T$
+
+$\frac{L(\hat{Y}, Y)}{W_1} = ∂Z_1 \cdot X^T$
 
 </div>
 
-While the gradients with respect to $B_1$ will looks as:
+Just as prior, we're transposing $X$ to ensure that it's dimensions are in alignment with $(W_2^T \cdot ∂Z_2) * ∂ReLU(Z_1)$ or $∂Z_1$ for the matrix multiplication.
+
+</div>
+
+Now we can compute the gradients of the losswith respect to $B_1$ will looks as:
 
 <div align = 'center'>
 
