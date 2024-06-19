@@ -70,7 +70,7 @@ $for \: each \: neuron,\:n,\: in\: hidden \: layer:$
 $z_1^n = w_1^nX + b_1^n$
 
 $a_1^n = ReLU{(z_1^n})$<br><br>
-<em style = 'font-size:12px'>The subscript $1$, denoting the first hidden layer.</em>
+<span style = 'font-size:12px'>The subscript $1$, denoting the first hidden layer.</span>
 </div>
 
 Then, the outputs of the hidden layer, $A_1$ in vectorized form for all neurons $n$, are fed into the output layer where the same process, an affine transformation and a non-linear activation, in this case will be softmax ($\tilde{\sigma}$), take place to allow for a final output.
