@@ -64,8 +64,8 @@ So this is why I built this repo, to build foundational knowledge for myself and
 - [X] Implement and explain Softmax.
 
 #### 3.6 Neural Networks with Weight Initialization Methods
-- [ ] Implement and explain Xavier Initialization.
-- [ ] Implement and explain He Initialization.
+- [X] Implement and explain Xavier Initialization.
+- [X] Implement and explain He Initialization.
 
 #### 3.7 Full Neural Network Flow Explanation and Code
 - [ ] Provide a full explanation and code for the complete neural network flow.

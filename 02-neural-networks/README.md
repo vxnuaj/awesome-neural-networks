@@ -870,3 +870,5 @@ Though of course, it isn't a one-size-fits-all solution.
 
 > [!NOTE] 
 > *Read more about Kaiming Initialization [here](https://arxiv.org/pdf/1502.01852)*
+
+You can check out an implementation of Kaiming initialization in [nn.py](nn.py) or [MiniBatchNN.py](MiniBatchNN.py), feel free to mess around and test things out.

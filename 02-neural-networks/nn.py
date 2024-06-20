@@ -19,8 +19,8 @@ REUSLTS:
 
 - Learning Rate: .1
 - Only one run of 1k Epochs
-- 92.9466666% Accuracy
-- 0.2509823839676802 Loss
+- 93.21833333333333% Accuracy
+- 0.24231020798813627 Loss
 
 '''
 
@@ -170,7 +170,7 @@ if __name__ == "__main__":
     X_train = data[:, 1: 785].T / 255 # 784, 60000
     Y_train = data[:, 0].reshape(1, -1) # 1, 60000 
 
-    epochs = 1
+    epochs = 1000
     alpha = .1
     file = 'models/nn.pkl'
 
