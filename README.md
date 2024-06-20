@@ -50,11 +50,11 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 ### 3. Vanilla Neural Networks
 #### 3.1 Overview of Neural Network Flow
-- [ ] Describe the base mathematics and process.
+- [X] Describe the base mathematics and process.
   - [X] Explain Forward Pass.
   - [X] Explain Backward Pass.
   - [X] Explain Weight Update.
-  - [ ] Explain Gradient Descent + Mini Batch Descent
+  - [X] Explain Gradient Descent + Mini Batch Descent
 
 #### 3.2 Different Activation Functions
 - [ ] Implement and explain Sigmoid.
