@@ -400,6 +400,27 @@ $∂B_1 = \frac{1}{m} * \sum((\frac{L(\hat{Y}, Y)}{Z_2})(\frac{∂Z_2}{∂A_1})(
 
 This might seem very verbose right now, but it'll look extremely simple in code. If you can fully understand this, you'll have absolutely no trouble implementing this in code because you'll have an exceptional understanding of the foundations.
 
+An important thing to be wary of when training your model is the risk of introducing **vanishing** or **exploding** **gradients**.
+
+While in shallow models, this might pose to be much of a problem, once you get into deep neural networks, the gradients at earlier layers might begin to explode or vanish, ultimately being unable to effectively learn.
+
+Say we're using the $\sigma$ activation function. The maximum value for it's gradient is $.25$. Given that we use the chain rule to backpropagate the gradients onto earlier layers, this involves an increasingly lengthy multiplication the deeper a network gets.
+
+So if the maximum gradient for $\sigma$ is $.25$ and say the gradietns for each layer did manage to be at $.25$ during the first training pass, if we use $\sigma$ for all of our hidden layers, in say a $10$ layer network, during back propagation the gradients for the first layer would be calculated as:
+<br><br>
+<div align = 'center'>
+
+$∂W_1 = (.25)(.25)(.25)(.25)(.25)(.25)(.25)(.25)(.25)(.25)(.25)$
+
+$∂W_1 = 0.00000095367431640625$
+
+</div>
+
+The gradient for $∂W_1$ turns out to be extremely small, which isn't ideal for training the earlier layers of the model. Combined with commonly smaller learning rates, this problem becomes worse.
+
+Of course in practice, it isn't often that you'll see the use of $\sigma$, you'll more often see $ReLU$ or other variants being used as an activation function which mitigate the issue of vanishing gradients.
+
+
 ### weight update
 
 Now, we can compute the weight update for any given parameter, $\theta_l$, using the same formula as prior:
@@ -458,7 +479,7 @@ $∂B_1 = \frac{1}{m} * \sum(∂Z_1, axis = 1, keepdims = True)$
 </div>
 
 > [!IMPORTANT]
-> *If you're curious to see what has been covered so far in code, check it out [here](nn.py)!*
+> *If you're curious to this process in code, through the implementation of a neural network, check it out [here](nn.py)!*
 
 ### mini-batch gradient descent
 
@@ -503,3 +524,62 @@ Some principles to keep in mind when choosing a mini-batch size are:
 - Typical mini-batch sizes are on orders of two, ${32, 64, 128, 256, etc}$, given how modern computer chips are built, process data like this is more optimal for ensuring you get the biggest efficiency.
 - Make sure your mini-batch fits in your CPU / GPU nmemory
 - If you're using BatchNorm ( which we'll go over later ), very small batches can lead to poor estimates of batch statistics ($\mu$ and $\beta$).
+
+> [!IMPORTANT]
+> *If you want to see a neural network, that implements mini-batch descent, check it out [here](MiniBatchNN.py)!*
+
+## activation functions
+
+So far, the discussed activation functions have been sigmoid ($\sigma$), softmax ($\tilde{\sigma}$), and $ReLU$. Other ones include $Leaky$&nbsp;$ReLU$, $tanh$, $PReLU$, $SeLU$, and many more. 
+
+These all come with their unique properties that make some useful for specific scenarios and others not, which all depends on the type of model being built.
+
+But each activation function should have a key set of needed features that allow for effective learning and efficient computation.
+
+<details><summary> <b>Non-linearity</b> </summary>
+The introduction of nonlinearity given by an activation function is extremely important for a neural network as it allows for it to capture complex features and datapoints from a set of inputs. 
+
+Without activation functions, a neural network would essentially be a set of linear classifiers, unable to produce quality results to solve complex problems.</details>
+
+
+
+<details><summary> <b>Range</b> </summary>
+Activation functions have different ranges, some ranging from 0 to 1, others from 0 to infinity, and others from 1 to 1.
+
+The output range of an activation function can be important to consider, for a variety of factors. 
+	
+It's range can affect the scale of gradients during backpropagation leading to exploding or vanishing gradients, the numerical stability, and the interpretability of an activation function (some, such as softmax, can be seen as a probability).</details>
+
+
+<details><summary> <b>Monotonicity</b> </summary>Monotonicity, ensures that as the input of a model changes, the output remains consistently moving in a given direction (increasing or decreasing), which alongside it's smoothness is essential to a good loss function.
+
+If a function isn't monotonic, the gradient sign may change irregularly over different inputs which can then lead to the model converging to the wrong set of parameters at a local minima instead of a global minima. This then makes the model less interpretable in how it learns.</details>
+
+<details><summary> <b>Continuity</b> </summary>Continuity in an activation function allows for smooth continuous changes. 
+    
+As the inputs change, the outputs change slightly. This becomes important for ensuring smooth gradient descent computations during backpropagation. 
+    
+A lack of continuity, would imply that an activation function isn't differentiable at a given point, which may ultimately break the backpropagation and gradient descent.
+</details>
+
+	
+<details><summary> <b>Differentiability</b> </summary>Differentiability allows for gradient based optimization algorithms (backpropagation) to properly allow gradients to be computed for the weight updates. 
+
+If differentiability wasn't the case within the domain of an activation function, it's possible that NaN values begin to propagate throughout a model.</details>
+
+<details><summary> <b>Sparsity</b> </summary>The sparsity of activation functions can be beneficial when looking for more efficient computations. The more sparse an activation function is, the less computations it might have to compute in order to reach it's output, then also leading to better memory efficiency.
+
+Sparsity can also improve regularization. By encouraging neurons to be inactive at $0$, it reduces complexity which in certain contexts can mitigate overfitting and improve generalization.
+
+Too much sparsity, on the other hand, can limit the power of a model to learn complex and nuanced patterns in a dataset. 
+
+An activation function should be sparse enough to provide efficient computations and good regularization.</details>
+
+<details><summary> <b>Computational Complexity</b> </summary>	The more computationally expensive an activation function is to compute, the slower a neural network will take to learn and then provide inference. 
+
+It's better to use activation functions that are computationally efficient, in order to speed up the learning process and save valuable resources.</details>
+
+### $\sigma$
+
+The sigmoid activation, $\sigma$ as discussed prior, is defined as $\frac{1}{1 + e^{-z}}$.
+

@@ -91,7 +91,7 @@ Now the gradient of the `logistic sigmoid` function follow a bell shaped curve, 
 </div>
 
 
-You can notice, as the inputs ($x$-axis) tend to increase towards large postive or negative values, the gradient begins to *vanish*. This *vanishing* is called a *vanishing gradient* which can pose a problem to a model that makes use of this logistic sigmoid activtion function.
+You can notice, as the inputs ($x$-axis) tend to increase towards large postive or negative values, the gradient begins to *vanish*. This *vanishing* is called a *vanishing gradient* which can pose a problem to a model that makes use of this logistic sigmoid activtion function
 
 >*This will be covered more later.*
 
@@ -253,7 +253,21 @@ The backward pass, also known as backpropagation, of the model is an essential p
 
 Backpropagation involves the caluculation of gradients (aka derivatives) of the given loss function with respect to a set of parameters, $\theta$, which in our case, will be $W$ or $B$.
 
-This process is done through the chain rule.
+These gradients play an essential role, as they essentially denote the level of "steepness" at a point on the surface of the loss, that a given set of parameters put the model on.
+
+<br>
+<div align = 'center'>
+<img src = '../util_images/losssurface.png' width = 450><img>
+</div>
+<br>
+
+In this image, the red-most regions are the most "steep", while the deep blue regions are more flat. Thereby, the red regions will have a higher gradient than the deep blue region, ultimately increasing the magnitude of the weight update.
+
+> *The weight update and it's magnitude will be more intuitive once we get to the update rule*.
+
+By noting this "steepness", the gradients tell us the direction the parameters should be updated to and the magniude of the update, which is proportional to the steepness of the loss.
+
+Now, calculating the gradients of the loss function with respect to set of parameters is done through the chain rule.
 
 > *This is where high school calculus comes in handy*
 
@@ -261,7 +275,11 @@ To compute the gradients for $W$ or $B$ (I'll use $\theta$ to represent either),
 
 The entire calculation will look as:
 
+<div align = 'center'>
+
 $\frac{∂L(Y, \hat{Y})}{∂\theta} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z})(\frac{∂Z}{∂\theta})$
+
+</div>
 
 So to find the gradients of the loss with respect to $W$ and $B$, we'd first need to compute the gradients with respect to the outermost variables, which in our case is $\hat{Y}$ and $Z$.
 
@@ -271,16 +289,23 @@ So in the case of logistic regression, where we use the binary cross entropy los
 
 This calculation of $∂Z$ implicitly computes $∂\hat{Y}$, so we can avoid the stand along calculation of $∂\hat{Y}$.
 
+<div align = 'center'>
+
 $∂Z = \frac{∂L(Y, \hat{Y})}{∂Z} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z}) = \hat{Y} - Y$
+</div>
 
 > *To keep things simple, we won't be deriving the full gradient with respect to $Z$ here.*
 
 So referring back to our original equation of the chain rule, 
 $\frac{∂L(Y, \hat{Y})}{∂\theta} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z})(\frac{∂Z}{∂\theta})$, now that we have $∂Z$, we can use the chain rule to calculate the gradients with respect to $W$ and $B$.
 
+<div align = 'center'>
+
 $∂W = (∂Z)(\frac{∂Z}{∂W}) = (\hat{Y} - Y) \cdot X^T$
 
 $∂B = (∂Z)(\frac{∂Z}{∂B}) = (\hat{Y} - Y) \cdot 1$
+</div>
+
 
 Now, these gradients $∂W$ and $∂B$, will play an important role in the update rule of our model, finalizing one pass of gradient descent.
 
@@ -308,7 +333,27 @@ $B = B - \alpha \cdot \frac{∂L(Y, \hat{Y})}{∂B}$
 
 This weight update allows for the parameters $W$ and $B$ to be updated in such a way that the model begins to minimize the value of loss, optimizing for a global minimum, ultimately increasing it's accuracy as a byproduct.
 
-So, up until now, we've computed a single pass of *gradient descent*, comprised of a ***forward pass*** and a ***backward pass***.
+Let's say we had a fixed value of $\alpha$ at $.1$. If a hypothetical gradient, say $∂W$was larger, at a value of $2.4$, our weights, $W$ would update by a value of $.24$. 
+
+<div align = 'center'>
+
+$W = W - .1 \cdot 2.4$
+
+$W = W - .24$
+</div>
+
+Inversely, if our gradient, $∂W$ was smaller, at a value of $.1$, our weights, $W$, woudl update by a mere $.01$.
+
+
+<div align = 'center'>
+
+$W = W - .1 \cdot .1$
+
+$W = W - .01$
+</div>
+
+
+So if we sum everything that's been covered up thus far, up until now, we've computed a single pass of *gradient descent*, comprised of a ***forward pass*** and a ***backward pass***.
 
 ### gradient descent
 

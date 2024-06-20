@@ -15,7 +15,7 @@ Use `np.random.default_rng(seed = 1)` for reproducible results.
 
 REUSLTS:
 
-- 1k Epochs
+- Only one run of 1k Epochs
 - Learning Rate .05
 - 87.73333% Accuracy
 - 0.353990240769725 Loss
