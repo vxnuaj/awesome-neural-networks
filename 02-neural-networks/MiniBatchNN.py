@@ -19,8 +19,8 @@ REUSLTS:
 
 - Only one run of 1k Epochs
 - Learning Rate .05
-- 87.73333% Accuracy
-- 0.353990240769725 Loss
+- 88.58333333333334% Accuracy
+- 0.32935665750484927 Loss
 
 '''
 
