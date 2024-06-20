@@ -456,13 +456,13 @@ $L(\hat{Y}, Y_{onehot}) = Y_{onehot} \cdot ln(\hat{Y})$
 
 The difference here is that $Y$, rather than taking the form of raw labels, takes the form of one hot encodings of the labels $Y$. 
 
-Essentially, a one hot encoding is a vector of $0$s and a singular $1$. The index where the singular $1$ is located, identifies our true label.
+Essentially, **a one hot encoding** is a vector of $0$s and a singular $1$. The index where the singular $1$ is located, identifies our true label.
 
 If I had the one hot encoding of $[0, 0, 0, 1]$, my label would be defined as $3$, as the singular $1$ is located at the $3$rd index of the one hot encoding.
 
 If I had the one hot encoding of $[1, 0, 0, 0]$, my label woudl be defined as $0$, as the singular $1$ is located at the $0$th index of the one hot encoding.
 
-> *Read more about one hot encodings here*
+> *Read more about one hot encodings [here](https://en.wikipedia.org/wiki/One-hot)*
 
 Now, here's a visual for easier understanding of the flow of the softmax regression.
 

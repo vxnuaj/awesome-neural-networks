@@ -4,6 +4,8 @@ Implementing a Vanilla Neural Network on 10 Mini-Batches of MNIST of sample size
 
 MODEL: MiniBatchNN.pkl
 
+If you want to test this model from scratch, remove the load_model() & the try and except statements from the model() function to initialize your own params
+
 SIZE:
 - 2 Layers
     - 32 neurons in the hidden layer
@@ -32,23 +34,23 @@ def init_params():
     Initializting Parameters, using seed = 1 for reproducibility
     '''
     rng = np.random.default_rng(seed = 1)
-    w1 = rng.normal(size = (32, 784)) * np.sqrt(1/ 784) # Using Xavier Initialization
+    w1 = rng.normal(size = (32, 784)) * np.sqrt(2/ 784) # Using Kaiming Initialization
     b1 = np.zeros((32, 1))
-    w2 = rng.normal(size = (10, 32)) * np.sqrt(1/ 784) # Using Xavier Initialization
+    w2 = rng.normal(size = (10, 32)) * np.sqrt(2/ 32) # Using Kaiming Initialization
     b2 = np.zeros((10, 1))
     return w1, b1, w2, b2
 
-def Leaky_ReLU(z):
+def ReLU(z):
     '''
     ReLU activation function
     '''
-    return np.where(z>0, z, 0.01 * z)
+    return np.maximum(z, 0)
 
-def Leaky_ReLU_deriv(z):
+def ReLU_deriv(z):
     '''
     Gradient of the ReLU activation function
     '''
-    return np.where(z > 0, 1, .01)
+    return np.where(z > 0, 1, 0)
 
 def softmax(z):
     '''
@@ -62,7 +64,7 @@ def forward(x, w1, b1, w2, b2):
     Implementing the forward pass
     '''
     z1 = np.dot(w1, x) + b1
-    a1 = Leaky_ReLU(z1)
+    a1 = ReLU(z1)
     z2 = np.dot(w2, a1) + b2
     a2 = softmax(z2)
     return a1, z1, a2, z2
@@ -101,7 +103,7 @@ def backward(x, y_onehot, w2, a2, a1, z1):
     dz2 = a2 - y_onehot
     dw2 = np.dot(dz2, a1.T) / y_onehot.shape[1]
     db2 = np.sum(dz2, axis = 1, keepdims = True) / y_onehot.shape[1]
-    dz1 = np.dot(w2.T, dz2) * Leaky_ReLU_deriv(z1)
+    dz1 = np.dot(w2.T, dz2) * ReLU_deriv(z1)
     dw1 = np.dot(dz1, x.T) / y_onehot.shape[1]
     db1 = np.sum(dz1, axis = 1, keepdims=True) / y_onehot.shape[1]
     return dw1, db1, dw2, db2

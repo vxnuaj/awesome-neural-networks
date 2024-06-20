@@ -57,21 +57,11 @@ So this is why I built this repo, to build foundational knowledge for myself and
   - [X] Explain Gradient Descent + Mini Batch Descent
 
 #### 3.2 Different Activation Functions
-- [ ] Implement and explain Sigmoid.
-- [ ] Implement and explain TanH.
-- [ ] Implement and explain ReLU.
-- [ ] Implement and explain ELU.
-- [ ] Implement and explain SELU.
-
-#### 3.3 One Hot Encoding
-- [ ] Implement and explain One Hot Encoding.
-
-#### 3.4 Loss Functions
-- [ ] Implement and explain Categorical Cross Entropy.
-- [ ] Implement and explain Smoothed Categorical Cross Entropy.
-
-#### 3.5 Softmax as Output
-- [ ] Implement and explain Softmax as an output layer.
+- [X] Implement and explain Sigmoid.
+- [X] Implement and explain TanH.
+- [X] Implement and explain ReLU.
+- [X] Implement and explain Leaky ReLU.
+- [X] Implement and explain Softmax.
 
 #### 3.6 Neural Networks with Weight Initialization Methods
 - [ ] Implement and explain Xavier Initialization.

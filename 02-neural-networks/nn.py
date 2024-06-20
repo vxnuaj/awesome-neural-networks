@@ -4,6 +4,8 @@ Implementing a Vanilla Neural Network on MNIST.
 
 MODEL: nn.pkl
 
+If you want to test this model from scratch, remove the load_model() & the try and except statements from the model() function to initialize your own params
+
 SIZE:
 - 2 Layers
     - 32 neurons in the hidden layer
@@ -31,9 +33,9 @@ def init_params():
     Initializting Parameters, using seed = 1 for reproducibility
     '''
     rng = np.random.default_rng(seed = 1)
-    w1 = rng.normal(size = (32, 784)) * np.sqrt(1/ 784) # Using Xavier Initialization
+    w1 = rng.normal(size = (32, 784)) * np.sqrt(2/ 784) # Using Kaiming Initialization
     b1 = np.zeros((32, 1))
-    w2 = rng.normal(size = (10, 32)) * np.sqrt(1/ 32) # Using Xavier Initialization
+    w2 = rng.normal(size = (10, 32)) * np.sqrt(2/ 32) # Using Kaiming Initialization
     b2 = np.zeros((10, 1))
     return w1, b1, w2, b2
 
