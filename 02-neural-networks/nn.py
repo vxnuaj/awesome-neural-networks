@@ -2,6 +2,8 @@
 
 Implementing a Vanilla Neural Network on MNIST.
 
+MODEL: nn.pkl
+
 SIZE:
 - 2 Layers
     - 32 neurons in the hidden layer
@@ -15,6 +17,8 @@ REUSLTS:
 
 - Learning Rate: .1
 - Epochs: 1000
+- 92.9466666% Accuracy
+- 0.2509823839676802 Loss
 
 '''
 

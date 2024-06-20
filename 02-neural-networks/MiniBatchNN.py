@@ -2,6 +2,8 @@
 
 Implementing a Vanilla Neural Network on 10 Mini-Batches of MNIST of sample size 6000
 
+MODEL: MiniBatchNN.pkl
+
 SIZE:
 - 2 Layers
     - 32 neurons in the hidden layer
@@ -12,6 +14,11 @@ SIZE:
 Use `np.random.default_rng(seed = 1)` for reproducible results.
 
 REUSLTS:
+
+- 1k Epochs
+- Learning Rate .05
+- 87.73333% Accuracy
+- 0.353990240769725 Loss
 
 '''
 
@@ -183,7 +190,7 @@ def load_model(file):
 if __name__ == "__main__":
     
     epochs = 1000
-    alpha = .1
+    alpha = .05
     file = 'models/MiniBatchNN.pkl'
     num_mini_batches = 10
     
