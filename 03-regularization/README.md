@@ -47,7 +47,7 @@ Discussing the $L1$ norm of a vector $X$, it's essentially computed as the $\sum
 
 <div align = 'center'>
 
-$||X||_1 = \sum_{i = 1}^I |x_1| + |x_2| + |x_3| + ... + |x_I|$
+$\lVert X \rVert_1 = \sum_{i = 1}^I |x_1| + |x_2| + |x_3| + ... + |x_I|$
 </div>
 
 This essentially then calculates the magnitude ( size ) of a given vector in a taxicab space, where the euclidean distance is ignored.
