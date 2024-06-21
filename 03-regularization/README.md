@@ -145,6 +145,20 @@ $∂W_1 = (∂Z_1 \cdot X^T) + 2\lambda W_1$
 
 </div>
 
-Same as the $L1$ regularization, the same intuition can be used where the penalty term increases as the magnitude of $W_1$ increases, thereby punishing larger values of $W_1$ through the update rule, thereby mitigating the probability of overfitting.
+As the $L1$ regularization, the same intuition can be used where the penalty term increases as the magnitude of $W_1$ increases, thereby punishing larger values of $W_1$ through the update rule, and then mitigating the probability of overfitting.
 
 ## Dropout
+
+Droput, is a form of regularization that doesn't bear much resemblance to $L1$ or $L2$ regularization aside from the fact, as all regularization aims to do, that it aims to mitigate the probability of a model overfitting on a training set.
+
+Dropout, instead of computing a penalty term for the loss and the gradients, it rather prunes or "drops" a portion of neurons in a neural network stochastically based on a probability $p$.
+
+Despite a model needing a lack of symmetry during weight initialization, typically done through random weight initialization, the asymmetric nature of the model weights can lead to a portion of them being of slightly larger magnitude than others, and as the model trains, they end up being a ***very*** ***significantly*** larger than other weights.
+
+This lack of symmetry leads to weights of smaller values to be dependent on weights of larger magnitudes to compute a final output. You could call this co-dependence, where the neurons have co-adapted to each others behavior.
+
+This issue then leads to overfitting, as co-adapted weights have seemingly learnt complex features fitting precisely to the training set, that aren't generalizable to the test set.
+
+Srivasta et al., then came up with a means to reduce the co-dependence of weights, which as mentioend earlier, was dropping a set of weights based on probability $p$.
+
+> *Read their paper [here](https://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf), if you're curious.*
