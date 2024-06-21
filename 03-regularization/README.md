@@ -1,5 +1,7 @@
 # Regularization
 
+$\newcommand{\sign}{\text{sign}}$
+
 > *[L1 Regularization Code](L1NN.py) | [L2 Regularization Code](L2NN.py) | [Dropout Regularization Code](DropoutNN.py)*
 
 Regularization proves to be another essential aspect when training neural networks.
