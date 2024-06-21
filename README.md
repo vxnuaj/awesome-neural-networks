@@ -67,15 +67,14 @@ So this is why I built this repo, to build foundational knowledge for myself and
 - [X] Implement and explain Xavier Initialization.
 - [X] Implement and explain He Initialization.
 
-#### 3.7 Full Neural Network Flow Explanation and Code
-- [ ] Provide a full explanation and code for the complete neural network flow.
-
 ### 5. Neural Networks with Regularization
 #### 5.1 L1 Regularization
-- [ ] Implement and explain L1 Regularization.
+- [X] Explain
+- [ ] Implement
 
 #### 5.2 L2 Regularization
-- [ ] Implement and explain L2 Regularization.
+- [X] Explain
+- [ ] Implement
 
 #### 5.3 Dropout
 - [ ] Implement and explain Dropout.

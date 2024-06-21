@@ -812,6 +812,8 @@ Common use cases include activations at the hidden layers of deep networks. It's
 
 ## parameter initialization
 
+> *[Code](Initialization.ipynb)*
+
 Parameter initialization is an important factor to consider when you begin to train models, the more complex they get, the more important proper parameter initialization is.
 
 It can mark the difference between being able to effectively learn and a model inexplicably running into NaN values or overflow / underflow errors.
@@ -871,4 +873,6 @@ Though of course, it isn't a one-size-fits-all solution.
 > [!NOTE] 
 > *Read more about Kaiming Initialization [here](https://arxiv.org/pdf/1502.01852)*
 
-You can check out an implementation of Kaiming initialization in [nn.py](nn.py) or [MiniBatchNN.py](MiniBatchNN.py), feel free to mess around and test things out.
+**You can check out an implementation of Kaiming initialization in [nn.py](nn.py) or [MiniBatchNN.py](MiniBatchNN.py), feel free to mess around and test things out.**
+
+**Next: [Regularization](../03-regularization/README.md)**
