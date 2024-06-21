@@ -118,9 +118,9 @@ So the $L2^2$ is then called the frobenius norm, where again, it's essentially t
 
 Where you can define the $L2$ norm as:
 
-<div align = 'center'>
+<div align = 'center'>  
 
-$\lVert \theta \rVert_2 = \sum_{i = 1}^I \sqrt{\theta_1 + \theta_2 + ... + \theta_I}$
+$\lVert \theta\rVert_2 = \sum_{i = 1}^{I} \sqrt{\theta_1 + \theta_2 + ... + \theta_I}$
 </div>
  
 you can define the frobenius norm as:
