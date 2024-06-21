@@ -134,7 +134,7 @@ So if we were to calculate the Frobenius norm, the penalty term for the loss, an
 
 <div align = 'center'>
 
-$\lVert W_1 \rVert _2 = \sum_{i = 1}^I w_{11}^2 + w_{12}^2 + w_{13}^2 + ... + w_{14}^2$
+$\lVert W_1 \rVert_2 = \sum_{i = 1}^I w_{11}^2 + w_{12}^2 + w_{13}^2 + ... + w_{14}^2$
 
 $\lambda||W_1||_2$
 
