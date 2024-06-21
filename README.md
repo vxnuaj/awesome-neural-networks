@@ -74,10 +74,11 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 #### 5.2 L2 Regularization
 - [X] Explain
-- [ ] Implement
+- [X] Implement
 
 #### 5.3 Dropout
-- [ ] Implement and explain Dropout.
+- [ ] Explain
+- [ ] Implement
 
 ### 6. Neural Networks with Scheduled Learning Rates
 #### 6.1 Halving

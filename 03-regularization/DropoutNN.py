@@ -1,4 +1,20 @@
 '''
+Implementing a Neural Network with Dropout Regularization + Mini Batch GD
+
+Trained for 1k Epochs, on Fashion-MNIST, mini batched to size of 6k samples each, 10 batches total
+- Learning Rate: .05
+- Epochs: 1000 (10000)
+
+Results:
+- Accuracy: 78.649999
+- Loss: 0.606707748411307
+
+Use np.random.default_rng(seed = 1) for reproducibility.
+
+> Note - Dropout isn't needed for such a simple task, you'd be better off training the model
+> without droput and with a better optimizer such as Adam or RMSprop + BatchNorm to easily hit 99.999% accuracy
+>
+> This is just for demonstration purposes.
 
 '''
 
@@ -37,12 +53,18 @@ def softmax(z):
     eps = 1e-8
     return np.exp(z + eps) / np.sum(np.exp(z + eps), axis = 0, keepdims = True)
 
-def forward(x, w1, b1, w2, b2):
+def forward(x, w1, b1, w2, b2, p):
     '''
-    Implementing the forward pass
+    Implementing the forward pass, with a droput layer where p is the keep probability, while ( 1 - p ) is the probability of dropping a neuron.
     '''
     z1 = np.dot(w1, x) + b1
     a1 = Leaky_ReLU(z1)
+    
+    d1 = np.random.rand(a1.shape[0], a1.shape[1])   # Creating the Dropout Mask Shape, must be drawn from a random uniform distribution otherwise the use of probability p will not hold.
+    d1 = d1 < p # Setting a random set of vals in d1 to 0 (represented as bool, 'False'), based on the keep probability p
+    a1 = np.multiply(a1, d1) # Multiplying activation A1 with dropout mask D1
+    a1 /= p # Applying the scaling factor, 
+        
     z2 = np.dot(w2, a1) + b2
     a2 = softmax(z2)
     return a1, z1, a2, z2
@@ -96,14 +118,14 @@ def update(w1, b1, w2, b2, dw1, db1, dw2, db2, alpha):
     w2 = w2 - alpha * dw2
     return w1, b1, w2, b2
 
-def gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, file):
+def gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, p, file):
     '''
     Gradient Descent
     '''
     y_onehot = one_hot(y)
     for epoch in range(epochs):
         for minibatch in range(x.shape[0]):
-            a1, z1, a2, z2 = forward(x[minibatch], w1, b1, w2, b2)
+            a1, z1, a2, z2 = forward(x[minibatch], w1, b1, w2, b2, p)
 
             accuracy = acc(y[minibatch], a2)
             loss = CCE(y_onehot[minibatch], a2)
@@ -117,7 +139,7 @@ def gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, file):
     save_model(file, w1, b1, w2, b2)
     return w1, b1, w2, b2
 
-def model(x, y, epochs, alpha, file):
+def model(x, y, epochs, alpha, p, file):
     '''
     One function call for the model
     '''
@@ -131,7 +153,7 @@ def model(x, y, epochs, alpha, file):
         w1, b1, w2, b2 = init_params()
         print("Beginning training in 3 seconds\n") #debugging
         time.sleep(3.0)
-    w1, b1, w2, b2 = gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, file)
+    w1, b1, w2, b2 = gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, p, file)
     return w1, b1, w2, b2
 
 def minibatches(data, num_mini_batches):
@@ -170,12 +192,13 @@ if __name__ == "__main__":
     
     epochs = 1000
     alpha = .05
-    file = 'models/MiniBatchNN.pkl'
+    file = 'models/DropoutNN.pkl'
     num_mini_batches = 10
+    p = .75 # Defining the keep probability, where ( 1 - p) is the probabilty of dropping a set of neurons.
     
     data = pd.read_csv("datasets/fashion-mnist_train.csv")
     data = np.array(data) # 60000, 785
 
     X_train, Y_train = minibatches(data, num_mini_batches)
 
-    w1, b1, w2, b2 = model(X_train, Y_train, epochs, alpha, file)
+    w1, b1, w2, b2 = model(X_train, Y_train, epochs, alpha, p, file)

@@ -180,6 +180,8 @@ For the given layer in which you apply dropout, you multiply it's inputs, $a$, e
 
 The resulting $\tilde{A}$ are the original inputs to the given layer with the difference that a set number of values within $A$ were set to $0$ based on probablity $p$.
 
+Afterward, you'd need to scale $\tilde{A}$ by a division over probabilty
+
 Afterward, during the forward pass and it's affine transformation, $Z = W\tilde{A} + B$, a portion of the weights will have no impact on $\tilde{A}$ due to a multiplication by $0$, thereby increasing sparsity.
 
 Then dropping out a set of weights, during backpropagation, forces a subset of neurons to learn while the others don't as they'll have no gradient.
