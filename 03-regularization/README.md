@@ -93,11 +93,8 @@ $\lambda ||W||_1 \rightarrow \lambda sgn(W)$
 
 where the sign function is:
 
-<div align = 'center'>
 
-$\text{sgn}(x) = \begin{cases} -1, x<0 \\ 0, x = 0 \\ 1, x > 0 \end{cases}$
-
-</div>
+$$\text{sgn}(x) = \begin{cases} -1, x<0 \\ 0, x = 0 \\ 1, x > 0 \end{cases}$$
 
 This value is then added to $W$. For example, if we wanted to regularize the weights of our first hidden layer, $W_1$, we'd add it as such:
 
