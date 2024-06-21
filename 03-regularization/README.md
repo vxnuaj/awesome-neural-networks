@@ -161,4 +161,4 @@ This issue then leads to overfitting, as co-adapted weights have seemingly learn
 
 Srivasta et al., then came up with a means to reduce the co-dependence of weights, which as mentioend earlier, was dropping a set of weights based on probability $p$.
 
-> *Read their paper [here](https://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf), if you're curious.*
+> *Read their paper [here](Papers/Dropout.pdf), if you're curious.*
