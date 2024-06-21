@@ -120,14 +120,14 @@ Where you can define the $L2$ norm as:
 
 <div align = 'center'>  
 
-$\lVert \theta\rVert _2 = \sum_{i = 1}^{I} \sqrt{\theta_1 + \theta_2 + ... + \theta_I}$
+$\lVert \theta\rVert_2 = \sum_{i = 1}^{I} \sqrt{\theta_1 + \theta_2 + ... + \theta_I}$
 </div>
  
 you can define the frobenius norm as:
 
 <div align = 'center'>
 
-$\lVert \theta \rVert _2  = \sum_{i = 1}^I \theta_1^2 + \theta_2^2 + ... + \theta_I^2$
+$\lVert \theta \rVert_2  = \sum_{i = 1}^I \theta_1^2 + \theta_2^2 + ... + \theta_I^2$
 </div>
 
 So if we were to calculate the Frobenius norm, the penalty term for the loss, and the penalty term for the gradient, all for the weights parameter, $W_1$, it'd look as such:
