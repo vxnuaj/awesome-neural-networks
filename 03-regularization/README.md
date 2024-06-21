@@ -61,7 +61,7 @@ So for example, if we had a vector of weights, $W$, we'd calculate the $L1$ norm
 
 <div align = 'center'>
 
-$||W||_1 = \sum_{i = 0}^I |w_1| + |w_2| + |w_3| + ... + |w_I|$
+$\lVert W \rVert_1 = \sum_{i = 0}^I |w_1| + |w_2| + |w_3| + ... + |w_I|$
 
 </div>
 
@@ -134,7 +134,7 @@ So if we were to calculate the Frobenius norm, the penalty term for the loss, an
 
 <div align = 'center'>
 
-$||W_1||_2 = \sum_{i = 1}^I w_{11}^2 + w_{12}^2 + w_{13}^2 + ... + w_{14}^2$
+$\lVert W_1 \rVert _2 = \sum_{i = 1}^I w_{11}^2 + w_{12}^2 + w_{13}^2 + ... + w_{14}^2$
 
 $\lambda||W_1||_2$
 
