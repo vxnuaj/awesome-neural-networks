@@ -20,7 +20,7 @@ Let's define two things, ***bias*** and ***variance*** in a model.
 
 <br>
 <div align = 'center'>
-<img src = '../util_images/biasvariance.png' width = 700>
+<img src = '../util_images/biasvariance.png' width = 700></img>
 </div>
 
 Increasing model generalizability is about finding the optimum balance between the **bias** and **variance** of the model, you want your model to be complex enough to make good predictions (**low bias**) but generalizable enough to perform well on unseen data (**low variance**).
@@ -45,12 +45,11 @@ Then during backpropagation, the gradient of the loss with respect to this penal
 
 Discussing the $L1$ norm of a vector $X$, it's essentially computed as the $\sum$ of the absolute values of a given set of parameters within the vector, say $x_{i}$ where $i$ is the index of the vector.
 
+<div align = 'center'>
 
+||X||_1 = \sum_{i = 1}^I |x_1| + |x_2| + |x_3| + ... + |x_I|$
 
-$$
-||X||_1 = \sum_{i = 1}^I |x_1| + |x_2| + |x_3| + ... + |x_I|
-$$
-
+</div>
 
 This essentially then calculates the magnitude ( size ) of a given vector in a taxicab space, where the euclidean distance is ignored.
 
