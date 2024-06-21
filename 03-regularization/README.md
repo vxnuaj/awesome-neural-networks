@@ -43,6 +43,8 @@ Then during backpropagation, the gradient of the loss with respect to this penal
 
 ### L1 Regularization
 
+> *[L1 Regularization Code](L1NN.py)*
+
 Discussing the $L1$ norm of a vector $X$, it's essentially computed as the $\sum$ of the absolute values of a given set of parameters within the vector, say $x_{i}$ where $i$ is the index of the vector.
 
 <div align = 'center'>
@@ -107,7 +109,13 @@ The intuition behind **why** this works is relatively simple, if the magnitude o
 
 Thereby, the total loss and gradient for $∂W_1$ increases as $W$ increases in magnitude. Ultimately, this punishes and prevents higher valued weights from existing in the model through the update rule, which then decreases model complexity and overfitting.
 
+> [!NOTE]
+> *Check out an implementation [here](L1NN.py)*
+
+
 ### L2 Regularization
+
+> *[L2 Regularization Code](L2NN.py)*
 
 $L2$ regularization takes the same exact principles from $L1$ regularization, but makes use of a squared $L2$ norm instead.
 
@@ -143,7 +151,12 @@ $∂W_1 = (∂Z_1 \cdot X^T) + 2\lambda W_1$
 
 As the $L1$ regularization, the same intuition can be used where the penalty term increases as the magnitude of $W_1$ increases, thereby punishing larger values of $W_1$ through the update rule, and then mitigating the probability of overfitting.
 
+> [!NOTE]
+> *Check out an implementation [here](L2NN.py)*
+
 ## Dropout
+
+> *[Dropout Code](DropoutNN.py)*
 
 Droput, is a form of regularization that doesn't bear much resemblance to $L1$ or $L2$ regularization aside from the fact, as all regularization aims to do, that it aims to mitigate the probability of a model overfitting on a training set.
 
@@ -155,6 +168,30 @@ This lack of symmetry leads to weights of smaller values to be dependent on weig
 
 This issue then leads to overfitting, as co-adapted weights have seemingly learnt complex features fitting precisely to the training set, that aren't generalizable to the test set.
 
-Srivasta et al., then came up with a means to reduce the co-dependence of weights, which as mentioend earlier, was dropping a set of weights based on probability $p$.
+Srivasta et al., then came up with a means to reduce the co-dependence of weights, which as mentioned earlier, was dropping a set of weights based on probability $p$.
 
 > *Read their paper [here](Papers/Dropout.pdf), if you're curious.*
+
+It's pretty simple.
+
+In essence, you compute a vector, say $\vec{v}$, drawn from a uniform distribution between $0$ and $1$ based on a probability $p$ of a given value being $1$.
+
+For the given layer in which you apply dropout, you multiply it's inputs, $a$, element wise with $\vec{v}$, to get the "dropped out" inputs, $\tilde{A}$.
+
+The resulting $\tilde{A}$ are the original inputs to the given layer with the difference that a set number of values within $A$ were set to $0$ based on probablity $p$.
+
+Afterward, during the forward pass and it's affine transformation, $Z = W\tilde{A} + B$, a portion of the weights will have no impact on $\tilde{A}$ due to a multiplication by $0$, thereby increasing sparsity.
+
+Then dropping out a set of weights, during backpropagation, forces a subset of neurons to learn while the others don't as they'll have no gradient.
+
+> [!IMPORTANT]
+> *It's important to note, when you compute the gradients, to use the dropped out input, **Ã**, not the original input **A**.*
+> 
+> *This will ensure that the gradients for the respective parameter, say **W**, that were dropped out remain $0$ and don't get updated for a given forward pass, again, based on probability **p***
+
+This reduces co-dependence as the "lazy" weights, that have a smaller magnitude, will be forced to update at a steeper rate while the the already "strong" weights don't get updated for the given forward pass.
+
+Ultimately then, this adds a type of regularization and improves model generalizability.
+
+> [!NOTE]
+> *Check out an implementation [here](DropoutNN.py)*
