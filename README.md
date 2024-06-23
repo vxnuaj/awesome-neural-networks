@@ -1,6 +1,6 @@
 # awesome-neural-networks
 
-> Last Update: [  ]
+> *Last Update: [  ]*
 
 This repository is a dive into vanilla neural networks, implemented in pure NumPy to accelerate foundational learning.
 
@@ -70,15 +70,15 @@ So this is why I built this repo, to build foundational knowledge for myself and
 ### 5. Neural Networks with Regularization
 #### 5.1 L1 Regularization
 - [X] Explain
-- [ ] Implement
+- [X] Implement
 
 #### 5.2 L2 Regularization
 - [X] Explain
 - [X] Implement
 
 #### 5.3 Dropout
-- [ ] Explain
-- [ ] Implement
+- [X] Explain
+- [X] Implement
 
 ### 6. Neural Networks with Scheduled Learning Rates
 #### 6.1 Halving
