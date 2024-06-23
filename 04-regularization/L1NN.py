@@ -13,7 +13,7 @@ Results:
 Again, use np.random.default_rng( seed = 1 ) when initializing params for reproducibility.
 
 '''
-# hello from vim!
+# hello from vim! ( a test ) 
 
 import numpy as np
 import pandas as pd
