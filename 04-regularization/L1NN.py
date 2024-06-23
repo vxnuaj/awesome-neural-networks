@@ -193,5 +193,4 @@ if __name__ == "__main__":
     alpha = .05
     lambd = .1
     
-    model(X_train, Y_train, alpha, epochs, lambd, file)
-    
+    model(X_train, Y_train, alpha, epochs, lambd, file) 
