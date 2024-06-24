@@ -1,26 +1,6 @@
 '''
 
-Implementing a Vanilla Neural Network on 10 Mini-Batches of MNIST of sample size 6000
 
-MODEL: MiniBatchNN.pkl
-
-If you want to test this model from scratch, remove the load_model() & the try and except statements from the model() function to initialize your own params
-
-SIZE:
-- 2 Layers
-    - 32 neurons in the hidden layer
-    - 10 neurons in the output layer
-    - 25450 total parameters, including all params (weight + biases).
-    - Mini-Batch Gradient Descent
-
-Use `np.random.default_rng(seed = 1)` for reproducible results.
-
-REUSLTS:
-
-- Only one run of 1k Epochs
-- Learning Rate .05
-- 88.58333333333334% Accuracy
-- 0.32935665750484927 Loss
 
 '''
 
@@ -42,15 +22,15 @@ def init_params():
 
 def ReLU(z):
     '''
-    ReLU activation function
+    Leaky ReLU activation function
     '''
-    return np.maximum(z, 0)
+    return np.where(z > 0, z, .01 * z)
 
 def ReLU_deriv(z):
     '''
     Gradient of the ReLU activation function
     '''
-    return np.where(z > 0, 1, 0)
+    return np.where(z > 0, 1, .01)
 
 def softmax(z):
     '''
@@ -108,7 +88,12 @@ def backward(x, y_onehot, w2, a2, a1, z1):
     db1 = np.sum(dz1, axis = 1, keepdims=True) / y_onehot.shape[1]
     return dw1, db1, dw2, db2
 
-def update(w1, b1, w2, b2, dw1, db1, dw2, db2, alpha):
+def update(w1, b1, w2, b2, dw1, db1, dw2, db2, alpha, itr, k):
+    '''
+    Exponential Decay for alpha
+    '''
+    alpha = alpha * np.exp(-k * itr)
+    
     '''
     Applying the weight updates
     '''
@@ -116,30 +101,34 @@ def update(w1, b1, w2, b2, dw1, db1, dw2, db2, alpha):
     b1 = b1 - alpha * db1
     b2 = b2 - alpha * db2
     w2 = w2 - alpha * dw2
-    return w1, b1, w2, b2
+    return w1, b1, w2, b2, alpha
 
-def gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, file):
+def gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, k, file):
     '''
     Gradient Descent
     '''
     y_onehot = one_hot(y)
+    itr = 0
     for epoch in range(epochs):
         for minibatch in range(x.shape[0]):
+            itr += 1
+           
             a1, z1, a2, z2 = forward(x[minibatch], w1, b1, w2, b2)
 
             accuracy = acc(y[minibatch], a2)
             loss = CCE(y_onehot[minibatch], a2)
 
             dw1, db1, dw2, db2 = backward(x[minibatch], y_onehot[minibatch], w2, a2, a1, z1)
-            w1, b1, w2, b2 = update(w1, b1, w2, b2, dw1, db1, dw2, db2, alpha)
+            w1, b1, w2, b2, alpha = update(w1, b1, w2, b2, dw1, db1, dw2, db2, alpha, itr, k)
 
             print(f"Epoch: {epoch} | Iteration: {minibatch}")
             print(f"Loss: {loss}")
-            print(f"Accuracy: {accuracy}\n")
+            print(f"Accuracy: {accuracy}")
+            print(f"Learning Rate: {alpha}\n") # Printing the exponentially decaying learning rate.
     save_model(file, w1, b1, w2, b2)
     return w1, b1, w2, b2
 
-def model(x, y, epochs, alpha, file):
+def model(x, y, epochs, alpha, k, file):
     '''
     One function call for the model
     '''
@@ -153,7 +142,7 @@ def model(x, y, epochs, alpha, file):
         w1, b1, w2, b2 = init_params()
         print("Beginning training in 3 seconds\n") #debugging
         time.sleep(3.0)
-    w1, b1, w2, b2 = gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, file)
+    w1, b1, w2, b2 = gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, k, file)
     return w1, b1, w2, b2
 
 def minibatches(data, num_mini_batches):
@@ -193,6 +182,7 @@ if __name__ == "__main__":
     
     epochs = 1000
     alpha = .05
+    k = .00000001 # Decay Value for the learning rate. 
     file = 'models/nan.pkl'
     num_mini_batches = 10
     
@@ -201,4 +191,4 @@ if __name__ == "__main__":
 
     X_train, Y_train = minibatches(data, num_mini_batches)
 
-    w1, b1, w2, b2 = model(X_train, Y_train, epochs, alpha, file)
+    w1, b1, w2, b2 = model(X_train, Y_train, epochs, alpha, k, file)

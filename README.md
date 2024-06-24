@@ -29,9 +29,6 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 **CURRENT AREA OF FOCUS: Softmax Regression**
 
-### 1. A Brief History of Neural Networks
-- [ ] Write an overview of the history and evolution of neural networks.
-
 ### 2. Logistic SoftMax Regression
 - [X] Recap on Logistic Regression
   - [X] Logistic Mathematical Function
@@ -82,16 +79,18 @@ So this is why I built this repo, to build foundational knowledge for myself and
 
 ### 6. Neural Networks with Scheduled Learning Rates
 #### 6.1 Halving
-- [ ] Implement and explain learning rate halving.
+- [X] Implement and explain learning rate halving.
 
 #### 6.2 Exponential Decay
-- [ ] Implement and explain exponential decay of learning rate.
+- [X] Implement
+- [X] Explain.
 
 #### 6.3 Cyclical Learning
-- [ ] Implement and explain cyclical learning rates.
+- [X] Implement
+- [X] Explain
 
 #### 6.4 1cycle & Superconvergence
-- [ ] Implement and explain 1cycle policy and superconvergence.
+- [X] Explain
 
 ### 7. Neural Networks with Advanced Optimization
 #### 7.1 Momentum
