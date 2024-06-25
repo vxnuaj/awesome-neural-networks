@@ -121,7 +121,7 @@ The problem posed in the traditional gradient descent algorithm, was that it ena
 The cause of this being that the gradients of the loss with respect to a parameter can wildly vary and may not be smoothed throughout the process of training a model. 
 
 <div align = 'center'>
-<img src = '../util_images/vosci.png'></img>
+<img src = '../util_images/vosci.png'></img><br>
 <em style = 'font-size:12px'> For example, a learning path of gradient descent without momentum. </em>
 </div>
 <br>
