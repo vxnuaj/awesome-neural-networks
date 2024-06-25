@@ -21,11 +21,13 @@ $W1, B1, W2, B2 = Update(W1, B1, W2, B2, ∂W1, ∂B1, ∂W2, ∂B2, \alpha)$
 There are other means, better algoithms, that can be implemented to modify the traditional gradient descent, and make way for faster training and convergence of a neural network.
 
 > [!NOTE]
-> Of course, at least when used right.
+> *Of course, at least when used right.*
 
 Some of these improved optimizers, include momentum, RMSprop, Adam, and AdaMax, all involving a foundational concept called [Exponentially Weighted Averages](https://en.wikipedia.org/wiki/Exponential_smoothing).
 
 ### exponentially weighted averages
+
+> [EWA Sample Code](EWA.py)
 
 Exponentially weighted averages (EWA), or known as exponential moving averages, are a means to average and smooth out a set of data points over time $t$, based on a smoothing parameter, $\beta$.
 
@@ -110,9 +112,13 @@ Ultimately, EWAs are just a means of averaging a dataset overtime $t$,  in a man
 
 ### gradient descent with momentum
 
+> *[Implementation of a Neural Network with momentum based gradient descent.](MomentumNN.py)*
+
 Momentum based gradient descent, is a means to increase the speed of convergence of a neural network by adding a *momentum* which is able to give the model a slight "push" in the right direction towards the global optima.
 
-The problem posed in the traditional gradient descent algorithm, was that it enables varying degrees of vertical oscillations in the learning path, ultimately decreasing the speed of convergence as a model isn't as intentional towards finding the local optima. 
+The problem posed in the traditional gradient descent algorithm, was that it enables varying degrees of vertical oscillations in the learning path, ultimately decreasing the speed of convergence as a model isn't as intentional towards finding the local optima.
+
+The cause of this being that the gradients of the loss with respect to a parameter can wildly vary and may not be smoothed throughout the process of training a model. 
 
 <div align = 'center'>
 <img src = '../util_images/vosci.png'></img>
@@ -130,11 +136,48 @@ Essentially, this is what an exponentially weighted average (EWA) can make way f
 
 If you recall how EWA smoothes data points, 
 
+<div align = 'center'>
 <img src = '../util_images/ewa1.png' width = 550></img>
+</div>
 
-the same process can be applied to the gradients, to smooth them out by averaging, allowing for less vertical oscillations within them, and then less vertical oscillations in the overall learning curve.
+the same process can be applied to the gradients of the loss with respect to a paramter, $\theta$, to smooth them out by averaging, allowing for less vertical oscillations within them, and then less vertical oscillations in the overall learning curve.
 
+Ultimately then, when applied, the learning curve would end up being smoother, allowing for faster learning, while retaining a similar magnitude of $\alpha$.
 
+<div align = 'center'>
+<img src = '../util_images/momentum.png' width = 550></img>
+</div>
 
+> [!NOTE]
+> *Notice how momentum based gradient descent is more intentional and is able to take larger step sizes when compared to vanilla gradient descent*
 
+So, momentum with gradient descent, can be applied in a similar way to EWAs, we now average the gradients up to a current iteration step, $t$, and then use the average gradient within the weight update.
 
+<div align = 'center'>
+
+$∂W_1, ∂B_1, ∂W_2, ∂B_2 = backward(X, Y_{onehot}, W_2, A_2, A_1, Z_1)$
+
+$V∂W_1 = \frac{\beta * V∂W_{1t-1} + (1 - \beta) * ∂W_1}{1 - \beta^2}$
+
+$V∂B_1 = \frac{\beta * V∂B_{1t-1} + (1 - \beta) * ∂B_1}{1 - \beta^2}$
+
+$V∂W_2 = \frac{\beta * V∂W_{2t-1} + (1 - \beta) * ∂W_2}{1 - \beta^2}$
+
+$V∂B_2 = \frac{\beta * V∂B_{2t-1} + (1 - \beta) * ∂B_2}{1 - \beta^2}$
+
+$W_1, B_1, W_2, B_2 = update(W_1, B_1, W_2, B_2, ∂VW_1, ∂VB_1, ∂VW_2, ∂VB_2)$
+</div>
+
+Note, that in this case, we don't need to apply a smoothing value if note desired, in practice it can be ignored, with the consequence being that it might take a couple of iterations or epochs, depending on the depth of your neural network, for the averaged gradients to *"warm-up"* and represent a true moving average.
+
+So then if desired, we can just define the averaged gradients for a parameter $\theta$, as:
+
+<div align = 'center'>
+
+$V∂\theta = \beta * (V∂\theta_{t - 1}) + ( 1 - \beta ) * ∂\theta$
+</div>
+
+without a smoothing term.
+
+>[!NOTE]
+> *If you're curious, check out an implementation [here](MomentumNN.py)*
