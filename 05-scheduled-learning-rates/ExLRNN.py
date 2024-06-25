@@ -1,5 +1,16 @@
 '''
+Implementation of a Neural Network with an Exponentially Decaying Learning Rate, trained on Mini Batched Fashion-MNIST samples. 
 
+MINIBATCH SIZE: 6K SAMPLES, 10 BATCHES TOTAL
+
+EPOCHS: 1000 ( 10k training steps ) 
+ALPHA: .05
+DECAY RATE (K): .00000001
+
+RESULTS:
+
+- ACCURACY: 88.5%
+- LOSS: 0.33672638410741257
 
 
 '''
@@ -123,7 +134,7 @@ def gradient_descent(x, y, w1, b1, w2, b2, epochs, alpha, k, file):
 
             print(f"Epoch: {epoch} | Iteration: {minibatch}")
             print(f"Loss: {loss}")
-            print(f"Accuracy: {accuracy}")
+            print(f"Accuracy: {accuracy}%")
             print(f"Learning Rate: {alpha}\n") # Printing the exponentially decaying learning rate.
     save_model(file, w1, b1, w2, b2)
     return w1, b1, w2, b2
@@ -183,7 +194,7 @@ if __name__ == "__main__":
     epochs = 1000
     alpha = .05
     k = .00000001 # Decay Value for the learning rate. 
-    file = 'models/nan.pkl'
+    file = 'models/ExLRNN.pkl'
     num_mini_batches = 10
     
     data = pd.read_csv("datasets/fashion-mnist_train.csv")

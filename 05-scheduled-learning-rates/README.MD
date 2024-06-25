@@ -113,11 +113,11 @@ This is done so in order to allow for a large maximum bounds of $\alpha$, whilst
 
 Superconvergence, another idea presented by Leslie Smith, is essentially a method where we can train a neural network orders of magnitude faster than traditional methods, due to the use of a cyclical learning rate and a 1cycle learning rate policy.
 
-With this method, the learning rate begins at a very small value and then is increased linearly, following the triangular policy, to find the maximum bounds of the learning rate using the learning rate range test.
+With this method, the learning rate, $\alpha$ begins at a very small value and then is increased linearly, following the triangular policy, to find the maximum bounds, $\alpha_{max}$, using the learning rate range test.
 
-The minimum bound for $\alpha$ is found by dividing $\alpha_{max}$ by an order of $3$ or $4$. 
+Then, the minimum bound for $\alpha$ is found by dividing $\alpha_{max}$ by an order of $3$ or $4$. 
 
-The learning rate is then cycled for only a single full cycle, once that full cycle is complete, then $\alpha$ is decreased once more to below $\alpha_{min}$.
+The learning rate is then cycled for only a single full cycle, once that full cycle is complete, then $\alpha$ is decreased once more, a couple of orders of magnitude, to below $\alpha_{min}$.
 
 This is called the 1cycle policy which, was found to bring faster training with higher accurcy in specific scenarios.
 
@@ -126,9 +126,9 @@ This is called the 1cycle policy which, was found to bring faster training with 
 <img src = '../util_images/1cycle.png' width = 650></img>
 </div>
 <br>
-The intuition behind this is, beginning with a smaller learning rate allows for a model to find it's way through the search space of the loss surface, then once the model is well on it's way through the intermediate stages of training, it could make use of a higher learning rate to escape saddle points and effectively navigate through them faster, then whilst it begins to near the final stages of training, a smaller learning rate is needed to allow for the model to find the global optima of the loss surface with more precision.
-
+The intuition behind this is, beginning with a smaller learning rate allows for a model to find it's way through the search space of the loss surface, then once the model is well on it's way through the intermediate stages of training, it could make use of a higher learning rate to escape saddle points and effectively navigate through them at a faster rate, then whilst it begins to near the final stages of training, a smaller learning rate is needed to allow for the model to find the global optima of the loss surface with more precision.
+<br><br>
 It's at the latter stages, where precision becomes extremely important otherwise the model risks overshooting, which is why a smaller learning rate can be extremely important.
-
-
+<br><br>
+Then superconvergence, can be an extremely powerful tool for speeding up the trianing of a model during the middle stages of training, while allowing for the model to still converge on it's set of parameters for the global optima of the loss surface.
 
