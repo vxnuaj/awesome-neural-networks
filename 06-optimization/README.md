@@ -165,7 +165,7 @@ $V∂W_2 = \frac{\beta * V∂W_{2t-1} + (1 - \beta) * ∂W_2}{1 - \beta^2}$
 
 $V∂B_2 = \frac{\beta * V∂B_{2t-1} + (1 - \beta) * ∂B_2}{1 - \beta^2}$
 
-$W_1, B_1, W_2, B_2 = update(W_1, B_1, W_2, B_2, ∂VW_1, ∂VB_1, ∂VW_2, ∂VB_2)$
+$W_1, B_1, W_2, B_2 = update(W_1, B_1, W_2, B_2, ∂VW_1, ∂VB_1, ∂VW_2, ∂VB_2, \alpha)$
 </div>
 
 Note, that in this case, we don't need to apply a smoothing value if note desired, in practice it can be ignored, with the consequence being that it might take a couple of iterations or epochs, depending on the depth of your neural network, for the averaged gradients to *"warm-up"* and represent a true moving average.
@@ -181,3 +181,77 @@ without a smoothing term.
 
 >[!NOTE]
 > *If you're curious, check out an implementation [here](MomentumNN.py)*
+
+### RMSprop
+
+> *[Implementation of a Neural Network with RMSpropagation](RMSpropNN.py)*
+
+Another algorithm, as a modified alternative gradient descent is Root Mean Squared Propagation or RMSprop for short.
+
+RMSprop involves the decay of the learning rate, $\alpha$, as the gradients of the loss with respect to a parameter $\theta$, increase. 
+
+Inversely, as a gradient, $\frac{∂L}{∂\theta}$, begins to decrease, the learning rate begins to increase.
+
+Unlike traditional scheduling of $\alpha$, $\alpha$ is instead scaled over time $t$ by dividing $\alpha$ over the root mean squared (RMS) of the exponentially weighted averaged (EWA) gradients squared, $S∂\theta$.
+
+So the equation to caluclate the EWA of $\theta^2$ is defined as:
+
+<div align ='center'> 
+
+$S∂\theta = \beta * S∂\theta_{t-1} + (1 - \beta) * ∂\theta^2$
+</div>
+
+Unlike previously, as done in momentum, when computing the exponentially weighted averages of the gradients, RMSprop typically doesn't incorporate bias correction in practice, as it's absence doesn't affect the algorithm as heavily, but in cases where the bias does inhibit learning, the bias correction value may be needed.
+
+<div align = 'center'>
+
+$S∂\theta = \frac{S∂\theta}{1 - beta^t}$<br>
+<em style = 'font-size: 12px'> Which then, the bias correction woudl be applied like this. </em>
+</div>
+
+Thereafter, once $S∂\theta$ is calculated, you adaptively scale the learning rate, within the update rule ($\theta = \theta - \alpha * \frac{∂L}{∂\theta}$) through a division by the RMS of $S∂\theta$.
+
+<div align = 'center'>
+
+$\theta = \theta - \frac{\alpha}{\sqrt{S∂\theta^2 + \epsilon}} * \frac{∂L}{∂\theta}$<br>
+<em style = 'font-size:12px'> Note the addition of a small epsilon to avoid division by 0. It's typically on the order of 1e-6 or smaller.</em>
+</div>
+
+Keep in mind that the exponentially averaged gradients, squared, is a fluctuating term over time. Increasing as the raw gradients increase, and decreasing as the raw gradients decrease.
+
+Therefore, as $∂\theta$ increases, $S∂\theta$ will increase, then $\sqrt{S∂\theta^2}$ will increase, therefore the division of $\alpha$ over $\sqrt{S∂\theta^2}$ will result in a smaller alpha as $∂\theta$ increases and inversely as $∂\theta$ decreases. 
+
+It's also important to note that RMSprop is more sensitive to the magnitude of a learning rate. While typically you might've been able to set a learning rate to $.1$ for instance, you'd need to scale you learning rate down to say $.01$ or $.001$ to make sure you don't introduce unwanted instability to your model.
+
+So ultimately, if we put this all together for a model with parameters $W_1$, $B_1$, $W_2$, and $B_2$, it'd look as:
+
+<div align = 'center'>
+
+$∂W_1, ∂B_1, ∂W_2, ∂B_2 = backward(X, Y_{onehot}, W_2, A_2, A_1, Z_1)$
+
+$S∂W_1 = \beta * S∂W_{1t-1} + (1 - \beta) * ∂W_1^2$
+
+$S∂B_1 = \beta * S∂B_{1t-1} + (1 - \beta) * ∂B_1^2$
+
+$S∂W_2 = \beta * S∂W_{2t-1} + (1 - \beta) * ∂W_2^2$
+
+$S∂B_2 = \beta * S∂B_{2t-1} + (1 - \beta) * ∂B_2^2$
+
+$W_1, B_1, W_2, B_2 = update(W_1, B_1, W_2, B_2, ∂W_1, ∂B_1, ∂W_2, ∂B_2, S∂W_1, S∂B_1, S∂W_2, S∂B_2, \alpha)$
+</div>
+
+Similar to momentum, this may reduce the vertical oscillations in the learning path, but at the trade-off of having a smaller learning rate.
+
+While in some situations, this can be beneficial as you'd want a smaller learning rate, if used improperly by tuning to the wrong $\beta$ value, a the adaptive learning rate may end up slowing you down.
+
+It's also important to note, RMSprop doesn't smooth your gradients like a momentum term does, it only adaptively scales the learning rate. 
+
+Therefore, your gradients might still be oscillating wildly in the vertical direction, but their impact onto the learning path would be mitigated by the smaller learning rate when the magnitude of their oscillations is larger.
+
+Then in some cases, it might be beneficial to implement a combination of both, RMSprop and Momentum based gradient descent.
+
+>[!NOTE]
+> *If you're curious, check out an implementation [here](RMSpropNN.py)*
+
+### adaptive moment estimation
+
