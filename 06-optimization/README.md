@@ -38,7 +38,7 @@ Therefore, if a set of datapoints appear to be in an upward trend, the EWA at ti
 Inversely, the EWA at a time $t$, when a set of datapoints is in a downward trend,will be at a lower value when compared to a SMA, as the SMA doesn't consider the downward trend to be of higher importance in comparison to past data points. For the SMA, everything is equivalent
 
 <div align = 'center'>
-<img src = "../util_images/averages.jpg" width = 600></img>
+<img src = "../util_images/averages.jpg" width = 600></img><br>
 <em style = 'font-size:12px'> Notice the difference, between the EWA and SMA</em>
 </div>
 <br>
