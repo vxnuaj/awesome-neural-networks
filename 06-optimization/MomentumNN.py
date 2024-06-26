@@ -88,7 +88,7 @@ def CCE(mini_onehot, a2):
     loss = - ( 1 / mini_onehot.shape[1] ) * np.sum(mini_onehot * np.log(a2 + eps))
     return loss
 
-def backward(x, mini_onehot, w2, a2, a1, z1, vdw1, vdb1, vdw2, vdb2, beta):
+def backward(x, mini_onehot, w2, a2, a1, z1, vdw1, vdb1, vdw2, vdb2, beta, t):
 
     '''
     Defining the backward pass.
@@ -109,6 +109,13 @@ def backward(x, mini_onehot, w2, a2, a1, z1, vdw1, vdb1, vdw2, vdb2, beta):
     vdb2 = beta * vdb2 + ( 1 - beta ) * db2
     vdw1 = beta * vdw1 + ( 1 - beta ) * dw1
     vdb1 = beta * vdb1 + ( 1 - beta ) * db1
+
+    '''
+    vdw2 = vdw2 / ( 1 - beta ** t)
+    vdb2 = vdb2 / ( 1 - beta ** t)
+    vdw1 = vdw1 / ( 1 - beta ** t)
+    vdb1 = vdb1 / ( 1 - beta ** t)
+    '''
     return vdw1, vdb1, vdw2, vdb2
 
 def update(w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2, alpha):
@@ -121,14 +128,18 @@ def update(w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2, alpha):
 def gradient_descent(x, y, w1, b1, w2, b2, alpha, beta, epochs, file):
     one_hot_y = one_hot(y)
     vdw1, vdb1, vdw2, vdb2 = 0, 0, 0, 0 # Setting initial values of EWA gradients to 0
+    t = 0 # Initial iteration value, to be used in the bias correction of momentum if appropriate
+
     for epoch in range(epochs):
         for i in range(x.shape[0]):
             z1, a1, z2, a2 = forward(x[i], w1, b1, w2, b2)
 
+            t += 1
+
             acc = accuracy(y[i], a2)
             loss = CCE(one_hot_y[i], a2)
 
-            vdw1, vdb1, vdw2, vdb2 = backward(x[i], one_hot_y[i], w2, a2, a1, z1, vdw1, vdb1, vdw2,vdb2, beta)
+            vdw1, vdb1, vdw2, vdb2 = backward(x[i], one_hot_y[i], w2, a2, a1, z1, vdw1, vdb1, vdw2,vdb2, beta, t)
             w1, b1, w2, b2 = update(w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2, alpha)
 
             print(f"Epoch: {epoch} | Iteration: {i}")
@@ -156,7 +167,7 @@ if __name__ == "__main__":
 
     alpha = .05
     beta = .9
-    epochs = 990
-    file = 'models/MomentumNN2.pkl'
+    epochs = 1000
+    file = 'models/NN2.pkl'
 
     w1, b1, w2, b2 = model(X_train, Y_train, alpha, beta, epochs, file)

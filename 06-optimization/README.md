@@ -177,7 +177,9 @@ So then if desired, we can just define the averaged gradients for a parameter $\
 $V∂\theta = \beta * (V∂\theta_{t - 1}) + ( 1 - \beta ) * ∂\theta$
 </div>
 
-without a smoothing term.
+without a smoothing term. 
+
+In practice, when you set the $\beta$ term, it's typically between the value of $.9$ and $.999$, depending on the needs for your neural networks.
 
 >[!NOTE]
 > *If you're curious, check out an implementation [here](MomentumNN.py)*
@@ -237,7 +239,14 @@ $S∂W_2 = \beta * S∂W_{2t-1} + (1 - \beta) * ∂W_2^2$
 
 $S∂B_2 = \beta * S∂B_{2t-1} + (1 - \beta) * ∂B_2^2$
 
-$W_1, B_1, W_2, B_2 = update(W_1, B_1, W_2, B_2, ∂W_1, ∂B_1, ∂W_2, ∂B_2, S∂W_1, S∂B_1, S∂W_2, S∂B_2, \alpha)$
+$W_1 = W_1 - \frac{\alpha}{\sqrt{S∂W_1^2 + \epsilon}} * \frac{∂L}{∂W_1}$
+
+$B_1 = B_1 - \frac{\alpha}{\sqrt{S∂B_1^2 + \epsilon}} * \frac{∂L}{∂B_1}$
+
+$W_2 = W_2 - \frac{\alpha}{\sqrt{S∂W_2^2 + \epsilon}} * \frac{∂L}{∂W_2}$
+
+$B_2 = B_2 - \frac{\alpha}{\sqrt{S∂B_2^2 + \epsilon}} * \frac{∂L}{∂B_2}$
+
 </div>
 
 Similar to momentum, this may reduce the vertical oscillations in the learning path, but at the trade-off of having a smaller learning rate.
@@ -250,8 +259,98 @@ Therefore, your gradients might still be oscillating wildly in the vertical dire
 
 Then in some cases, it might be beneficial to implement a combination of both, RMSprop and Momentum based gradient descent.
 
+Just like momentum, when you set the $\beta$ term, it's typically between the value of $.9$ and $.999$, and again, depends on the needs for your neural networks.
+
 >[!NOTE]
 > *If you're curious, check out an implementation [here](RMSpropNN.py)*
 
 ### adaptive moment estimation
 
+> *[Implementation of a Neural Network with adaptive moment estimation](AdamNN.py)*
+
+Adaptive moment estimation, also known as Adam, is another variation of gradient descent, to optimize for faster learning, this time making use of the properties that are present in both RMSprop and Gradient Descent with Momentum.
+
+Within the algorithm, the properties derived from the momentum based gradient descent and RMSprop are called the ***first order moment***, which is just the exponentially weighted average (EWA) of the gradients, and the ***second order moment*** which is the squared EWA of the gradients. 
+
+The ***first order moment*** is simply the EWA of the gradients up until time point $t$.
+
+<div align = 'center'>
+
+$V∂\theta_t = \beta_1 * V∂\theta_{t-1} + ( 1 - \beta_1)* ∂\theta_t$<br>
+<em style = 'font-size: 12px'>The same calculation as the original momentum term</em>
+</div>
+
+The ***second order moment*** represents the EWA of the squared gradients, more known as the uncentered variance, up until time point $t$.
+
+<div align = 'center'>
+
+$S∂\theta_t = \beta_2 * S∂\theta_{t-1} + ( 1 - \beta_2 ) * ∂\theta_t$<br>
+<em style = 'font-size: 12px'> The same calculation as is done in RMSprop</em>
+</div>
+
+The rationale behind the second moment being the uncentered variance is, variance is typically calculated as $\frac{\sum{(X - \mu)^2}}{n}$, but given that the EWA already computes a running average, without subtracting the $\mu^2$ from the squared datapoints, it's more referred to as the uncentered variance.
+
+Of course, if we subtracted the square of the first moment, $V∂\theta^2$, from the second moment, $S∂\theta$, we'd get the variance, but we don't need this term in the context of adam. 
+
+It's important to note that in Adam, you apply the bias correction term $1 - \beta$ to both, the first and second moments, to mitigate an initial bias towards $0$ in the initial steps. 
+
+While Adam can work without bias correction, it comes at the price of taking a few epochs to fully 'wamrup' your learning rate.
+
+> [!NOTE]
+> *Read more [here](https://arc.net/l/quote/kzfpckpd)*
+
+Those two computed terms, $V∂\theta_t$ and $S∂\theta_t$, are then used in the same manner as is done in RMSprop and momentum. 
+
+The first moment, $V∂\theta_t$ is used as the gradient in the update rule.
+
+The second moment, $S∂\theta_t$, is used as the term to adapt the learning rate through a division of $\frac{\alpha}{S∂\theta_t}$.
+
+Ultimately together, once they are both computed, the update rule then looks as:
+
+<div align = 'center'>
+
+$\theta = \theta - \frac{\alpha}{\sqrt{S∂\theta_t^2 + \epsilon}} * V∂\theta_t$<br>
+<em style = 'font-size: 12px'> Notice the small epsilon to avoid a division by 0</em>
+</div>
+
+So lets say we had a 2 layer neural network with parameters of $W_1, B_1, W_2, B_2$. 
+
+Put everything together, it all looks as:
+
+<div align = 'center'>
+
+$∂W_1, ∂B_1, ∂W_2, ∂B_2 = backward(X, Y_{onehot}, W_2, A_2, A_1, Z_1)$
+
+$V∂W_1 = \beta * V∂W_{1t-1} + (1 - \beta) * ∂W_1$
+
+$V∂B_1 = \beta * V∂B_{1t-1} + (1 - \beta) * ∂B_1$
+
+$V∂W_2 = \beta * V∂W_{2t-1} + (1 - \beta) * ∂W_2$
+
+$V∂B_2 = \beta * V∂B_{2t-1} + (1 - \beta) * ∂B_2$
+
+$S∂W_1 = \beta * S∂W_{1t-1} + (1 - \beta) * ∂W_1^2$
+
+$S∂B_1 = \beta * S∂B_{1t-1} + (1 - \beta) * ∂B_1^2$
+
+$S∂W_2 = \beta * S∂W_{2t-1} + (1 - \beta) * ∂W_2^2$
+
+$S∂B_2 = \beta * S∂B_{2t-1} + (1 - \beta) * ∂B_2^2$
+
+$W_1 = W_1 - \frac{\alpha}{\sqrt{S∂W_1^2 + \epsilon}} * V∂W_1$
+
+$B_1 = B_1 - \frac{\alpha}{\sqrt{S∂B_1^2 + \epsilon}} * V∂B_1$
+
+$W_2 = W_2 - \frac{\alpha}{\sqrt{S∂W_2^2 + \epsilon}} * V∂W_2$
+
+$B_2 = B_2 - \frac{\alpha}{\sqrt{S∂B_2^2 + \epsilon}} * V∂B_2$
+</div>
+
+It might seem that Adam proves to be a more robust optimizer, as it incorporates both momentum and an adaptive learning rate, but it's use-case purely depends on the specific model being built and the problem it's trying to solve.
+
+Note that, when you're tuning of setting the initial hyperparamters for Adam, $\beta_1$ and $\beta_2$, $\beta_1$ is typically set to an initial value of at least $.9$, to have high weighting for recent gradients, while $\beta_2$ is set to an initial value of $.99$ to have an optimal estimate of the variance.
+
+Determining the final values for both, usually comes down to a matter of empirical testing.
+
+> [!NOTE]
+> *Checkout an implementation of a Neural Network with Adam optimization [here](AdamNN.py)!*
