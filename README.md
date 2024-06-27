@@ -201,8 +201,9 @@ $Z = WX + B$
 
 $\hat{Y} = A = \sigma(Z) = \frac{1}{1 + e^{-Z}}$
 
-*where our activation, $A$, can be defined by $\hat{Y}$, denoting the prediction the logistic regression makes after a forward pass.*
 </div>
+
+*Where our activation, $A$, can be defined by $\hat{Y}$, denoting the prediction the logistic regression makes after a forward pass.*
 
 It's important to note that the multiplication of $W$ and $X$ is the matrix multiplication of each, not an element wise multiplication, at least when $W$ and $X$ are vectorized.
 
@@ -246,11 +247,9 @@ One last thing to note, is that when computing the final result of this logistic
 
 To get a final result for binary classification, which is what a logistic regression is designed to compute, you can take the output and apply a thresholding operation where,
 
-<div align = 'center'>
-
+```math
 $pred = \begin{cases} 1, p > .5 \\ 0, p < .5 \end{cases}$
-
-</div>
+```
 
 If your labels are originally defined as words, say **cat** and **dog**, you'd typically want to encode the words to be mapped to the numbers $0$ and $1$, so you can accurately compute the **accuracy** and **loss** (the amount of error).
 
