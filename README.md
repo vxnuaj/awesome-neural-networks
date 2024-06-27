@@ -25,7 +25,6 @@ It's designed for anyone with a base level of knowledge on Calculus, Linear Alge
 - [into neural nets](#into-neural-nets)
     - [the architecture](#the-architecture)
     - [the forward pass](#the-forward-pass-1)
-    - [TODO](#todo)
     - [the backpropagation](#the-backpropagation-1)
     - [weight update](#weight-update)
     - [gradient descent](#gradient-descent-1)
@@ -248,7 +247,7 @@ One last thing to note, is that when computing the final result of this logistic
 To get a final result for binary classification, which is what a logistic regression is designed to compute, you can take the output and apply a thresholding operation where,
 
 ```math
-$pred = \begin{cases} 1, p > .5 \\ 0, p < .5 \end{cases}$
+pred = \begin{cases} 1, p > .5 \\ 0, p < .5 \end{cases}
 ```
 
 If your labels are originally defined as words, say **cat** and **dog**, you'd typically want to encode the words to be mapped to the numbers $0$ and $1$, so you can accurately compute the **accuracy** and **loss** (the amount of error).
@@ -269,7 +268,7 @@ The loss function plays an invaluable role in our model, as it essentially defin
 
 For intuition, the loss function we defined above can define a loss surface as presented in the image above. 
 
->*Though typically, the more parameters that are introduced into a model, the more complex dimensionality a loss surface has. The above is a simplification of what a loss surface might look like, as it's difficult for us humans to visualize shapes that are $Nth$-dimensional, above **3D***.
+>*Though typically, the more parameters that are introduced into a model, the more complex dimensionality a loss surface has. The above is a simplification of what a loss surface might look like, as it's difficult for us humans to visualize shapes that are Nth-dimensional, above **3D***.
 
 A model will aim to minimize the value of the loss function, to reach a global optima of the given surface, which in the image above, can be represented by the deep blue region.
 
@@ -280,13 +279,16 @@ While in linear regression, you might've seen the loss to be computing using the
 
 This function takes in $Y$, which is the true label for a given input feature and $\hat{Y}$, which is the model's output, aiming to predict $Y$.
 
+<div align = 'center'>
+
 $L(Y, \hat{Y}) = - Y \cdot ln(\hat{Y}) - (1-Y) \cdot ln(1-\hat{Y})$
+</div>
 
 Within this function, if our label $Y$ is denoted as $0$, we effectively cancel out the first portion, $-Y \cdot ln(\hat{Y})$ due to a multiplication of $ln(\hat{Y})$ by $0$. 
 
 Therefore, we'd only compute: $- (1 - Y) \cdot ln(1 - \hat{Y})$.
 
->*Note that $\hat{Y}$ is the raw output of the $\sigma$ within range $[0,1]$, not the binary thresholded value $0$ or $1$*
+*Note that $\hat{Y}$ is the raw output of the $\sigma$ within range $[0,1]$, not the binary thresholded value $0$ or $1$*
 
 Now for example if our $\hat{Y}$ turnt out to be the value $.24$, our loss would be computed as:
 
@@ -367,7 +369,7 @@ This calculation of $∂Z$ implicitly computes $∂\hat{Y}$, so we can avoid the
 $∂Z = \frac{∂L(Y, \hat{Y})}{∂Z} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z}) = \hat{Y} - Y$
 </div>
 
-> *To keep things simple, we won't be deriving the full gradient with respect to $Z$ here.*
+> *To keep things simple, we won't be deriving the full gradient with respect to Z here.*
 
 So referring back to our original equation of the chain rule, 
 $\frac{∂L(Y, \hat{Y})}{∂\theta} = (\frac{∂L(Y, \hat{Y})}{∂\hat{Y}})(\frac{∂\hat{Y}}{∂Z})(\frac{∂Z}{∂\theta})$, now that we have $∂Z$, we can use the chain rule to calculate the gradients with respect to $W$ and $B$.
@@ -477,13 +479,14 @@ Softmax regression is essentially an extension of logistic regression that aims 
 
 This extension is purely brought upon by a modification to the $\sigma$ activation function that generalizes it to computing the probability of multiple classes being the correct label $Y$.
 
-Where you see the $\sigma$ being defined as $\frac{1}{1 + e^{-z}}$, we can now call our new activation function, now called the ***softmax*** activtaion function, defined as:
+Where you see the $\sigma$ being defined as $\frac{1}{1 + e^{-z}}$, we can now call our new activation function, now called the ***softmax*** activation function, defined as:
 
 <div align = 'center'>
 
 $\tilde{\sigma}(z) = \frac{e^z}{\sum{e^z}}$<br>
-<em style = 'font-size: 12px'>$\tilde{\sigma}$ being the softmax</em>
 </div>
+
+*$\tilde{\sigma}$ being the softmax*
 
 The modification to the $\sigma$ equation, to turn it into ***softmax*** ($\tilde{\sigma}$), allows for the computation of the probabilities for multiple classes.
 
@@ -631,19 +634,14 @@ In our case though, we'll be replacing the $\sigma$ activation function for a $R
 
 The rationale behind this being that $\sigma$ can prove to be unstable for deep neural networks, given that they're prone to vanishing gradients, and are more expensive to compute given $e$.
 
-### TODO
-- [ ] Add link to activation functions page to serve as an explanation, whenever ReLU is ment ioned
-
 > [!NOTE]
 > *For the following, it'll be assumed that all inputs, to both the hidden layer and output layer are **vectorized** outputs of a previous layer denoted by a capital variable.*
 > 
-> *In this case, the inputs are then matrices of dimensions - $(n_{in}, samples)$- where $n_{in}$ are the number of input features to a given layer*.
+> *In this case, the inputs are then matrices of dimensions - (n_in, samples) - where n_in are the number of input features to a given layer*.
 >
 > *To learn more about vectorization, check out this amazing [resource](https://youtu.be/qsIrQi0fzbY).*
 
 <div = align= 'center'>
-
-$for$&nbsp;$each$&nbsp;$neuron$,&nbsp;$n$,&nbsp;$in$&nbsp;$hidden$&nbsp;$layer:$
 
 $z_1^n = w_1^nX + b_1^n$
 
@@ -654,8 +652,6 @@ $a_1^n = ReLU{(z_1^n})$<br><br>
 Then, the outputs of the hidden layer, $A_1$ in vectorized form for all neurons $n$, are fed into the output layer where the same process, an affine transformation and a non-linear activation, in this case will be softmax ($\tilde{\sigma}$), take place to allow for a final output.
 
 <div align = 'center'>
-
-$for$&nbsp;$each$&nbsp;$neuron$,&nbsp;$n$,&nbsp;$in$&nbsp;$output$&nbsp;$layer:$
 
 $z_2^n = w_2^nA_1 + b_2^n$
 
@@ -865,10 +861,9 @@ $\frac{∂Z_2}{∂A_1} = W_2$
 
 Then $\frac{∂A_1}{∂Z_1}$ can be calculated as the gradient of the $ReLU$ activation with respect to $Z_1$. 
 
-<div align = 'center'>
-
+```math
 $\frac{∂ReLU}{∂Z_1} = \begin{cases} 1, Z_1 > 0 \\ 0, Z_1 < 0\end{cases}$
-</div>
+```
 
 We'll call this $∂ReLU(Z_1)$ to keep things simpler.
 
@@ -1029,7 +1024,6 @@ So to put it all together, it looks as:
 
 <div align = 'center'>
 
-$for$&nbsp;$epoch$&nbsp;$in$&nbsp;$range(epochs):$
 
 $Z_1 = W_1X + B_1$ 
 
