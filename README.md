@@ -96,9 +96,10 @@ In essence, logistic regression involves a combination of an affine transformati
 
 The `logistic sigmoid` activation function can be mathematically defined as:
 
-$$
-\sigma(x) = \frac{1}{1 + e^{-x}}
-$$
+<div align = 'center'>
+
+$\sigma(x) = \frac{1}{1 + e^{-x}}$
+</div>
 
 It's shape takes on a continuous and smooth s-shaped curve, bounded at it's range between $[0, 1]$ and in it's domain, $[-\infty, \infty]$.
 
