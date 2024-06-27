@@ -354,3 +354,40 @@ Determining the final values for both, usually comes down to a matter of empiric
 
 > [!NOTE]
 > *Checkout an implementation of a Neural Network with Adam optimization [here](AdamNN.py)!*
+
+### adamax
+
+So Adam, essentially makes use of an $L2$ norm to estimate the second moment, $V∂\theta$, as it computes the average of the squared gradients as: $\beta * S∂\theta_{t-1} + ( 1 - \beta ) * ∂\theta^2$, and then takes the $\sqrt{}$ during the weight decay as: $\frac{1}{\sqrt{S∂\theta}}$.
+
+Then the learning rate, $\alpha$ is adapted inversely to this $L2$ norm of the gradients by the division of $\frac{\alpha}{\sqrt{S∂\theta}}.$
+
+*The term, $\sqrt{S∂\theta}$ can be conceptually considered the $L2$ norm of the gradients, up until iteration, $t$.*
+
+It was found, [in the original paper for Adam](https://arxiv.org/pdf/1412.6980), that this inverse $L2$ norm of the gradients, can be generalized to an $LP$ based norm, only if an equation is derived when the limit of $p$ is set to go to $\infty$.
+
+<div align = 'center'>
+
+<img src = '../util_images/adamax1.png'></img>
+<img src = '../util_images/adamax2.png' width = 500></img>
+<img src = '../util_images/adamax3.png' width = 300></img><br>
+
+<em> Derivation, as presented in the original [Adam Paper](https://arxiv.org/pdf/1412.6980)</em>
+</div>
+
+Then, the equation for the second moment simply becomes a matter of taking the $max$, the greatest value, between $(\beta_2 \cdot S∂\theta, |∂\theta|)$.
+
+<div align = 'center'>
+
+$S∂\theta = (\beta_2 \cdot S∂\theta_{t-1}, |∂\theta|)$
+</div>
+
+which is then, as previous in Adam, used in the update rule to adaptively scale the learning rate as:
+
+<div align = 'center'>
+
+$\theta = \theta - \frac{\alpha}{\sqrt{S∂\theta + \epsilon}}(V∂\theta)$
+</div>
+
+Again, as previous, determining the hyperparameters for $\beta_1$ and $\beta_2$ are a matter of empirical testing.
+
+As for choosing between AdaMax and Adam, it's commonly said that AdaMax, in theory, is better suited for training models that involve embeddings and sparse weight updates.

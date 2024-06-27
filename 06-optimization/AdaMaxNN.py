@@ -1,13 +1,15 @@
 '''
-Implementing a Neural Network with Adam from Scratch
+Implementing a Neural Network with AdaMax from Scratch
 
-Alpha: .05
+Alpha: .1
 Beta_1: .9
-Beta_2: .9
+Beta_2: .99
+
 
 RESULTS after 1k Epochs (10000 training steps):
-- Acc: 97.05% 
-- Loss: .09081896
+
+- Loss: 0.11608715052044763
+- Accuracy: 96.2
 
 np.random.default_rng(seed = 1) for reproducibility
 
@@ -42,9 +44,9 @@ def minibatches(data, num_batches):
 
 def init_params():
     rng = np.random.default_rng(seed = 1)
-    w1 = rng.normal( size = (32, 784)) * np.sqrt(2/ 784) # Kaiming Init.
+    w1 = rng.normal( size = (32, 784)) * np.sqrt(1/ 784) # Xavier Init.
     b1 = np.zeros((32, 1))
-    w2 = rng.normal( size = (10, 32)) * np.sqrt(2/ 32) # Kaiming Init.
+    w2 = rng.normal( size = (10, 32)) * np.sqrt(1/ 784) # Xavier Init.
     b2 = np.zeros((10, 1))
     return w1, b1, w2, b2
 
@@ -108,11 +110,11 @@ def update(w1, b1, w2, b2, dw1, db1, dw2, db2, vdw1, vdb1, vdw2, vdb2, sdw1, sdb
     Computing the Second Moment
     """
 
-    sdw1 = (beta_2 * sdw1) + ( 1 - beta_2 ) * np.square(dw1)
-    sdb1 = (beta_2 * sdb1) + ( 1 - beta_2 ) * np.square(db1)
-    sdw2 = (beta_2 * sdw2) + ( 1 - beta_2 ) * np.square(dw2)
-    sdb2 = (beta_2 * sdb2) + ( 1 - beta_2 ) * np.square(db2)
-
+    sdw1 = np.maximum(beta_2 * sdw1, np.abs(dw1))
+    sdb1 = np.maximum(beta_2 * sdb1, np.abs(db1))
+    sdw2 = np.maximum(beta_2 * sdw2, np.abs(dw2))
+    sdb2 = np.maximum(beta_2 * sdb2, np.abs(db2))
+ 
     """
     Adam's Update Rule
     """
@@ -164,11 +166,11 @@ if __name__ == "__main__":
     data = np.array(data) # 60000, 785
 
     num_batches = 10
-    alpha = .01
+    alpha = .1
     epochs = 1000
     beta_1 = .9
-    beta_2 = .9
-    file = 'models/AdamNN.pkl'
+    beta_2 = .99
+    file = 'models/AdaMaxNN.pkl'
     
     X_train, Y_train = minibatches(data, num_batches)
 
