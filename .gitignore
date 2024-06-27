@@ -4,3 +4,4 @@ datasets/fashion-mnist_train.csv
 *.swp
 *.swo
 *.swn
+*.DS_Store
