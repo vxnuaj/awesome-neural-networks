@@ -1088,7 +1088,7 @@ Another benefit of processing data in mini-batches is the tiny bit of regulariza
 
 Some principles to keep in mind when choosing a mini-batch size are:
 
-- If you have a small training set, where samples, $m$, is $ < ~2000$ make use of full-batch gradient descent instead
+- If you have a small training set, where samples, $m$, is $< ~2000$ make use of full-batch gradient descent instead
 - Typical mini-batch sizes are on orders of two, ${32, 64, 128, 256, etc}$, given how modern computer chips are built, process data like this is more optimal for ensuring you get the biggest efficiency.
 - Make sure your mini-batch fits in your CPU / GPU nmemory
 - If you're using BatchNorm ( which we'll go over later ), very small batches can lead to poor estimates of batch statistics ($\mu$ and $\beta$).
@@ -1167,7 +1167,7 @@ Though of course, it isn't a one-size-fits-all solution.
 
 > Checkout the implementations for each activation function in this [Jupyter Notebook](ActivationFuncs.ipynb)
 
-So far, the discussed activation functions have been sigmoid ($\sigma$), softmax ($\tilde{\sigma}$), and $ReLU$. Other ones include $Leaky$&nbsp;$ReLU$, $tanh$, $PReLU$, $SeLU$, and many more. 
+So far, the discussed activation functions have been sigmoid ($\sigma$), softmax ($\tilde{\sigma}$), and $ReLU$. Other ones include $LeakyReLU$, $tanh$, $PReLU$, $SeLU$, and many more. 
 
 These all come with their unique properties that make some useful for specific scenarios and others not, which all depends on the type of model being built.
 
@@ -1343,20 +1343,17 @@ $ReLU$ is an activation function that's $0$ when $z < 0$ and linear when $z > 0$
 
 Mathematically, it's defined as:
 
-<div align = 'center'>
-
+```math
 $ReLU(z) = \begin{cases} z, z>0 \\ 0, z<0 \end{cases}$
 
 $ReLU(z) = max(0, z)$
-
-</div>
+```
 
 while it's derivative looks like:
 
-<div align = 'center'>
-
+```math
 $ReLU'(z) = \begin{cases} 1, z>0 \\ 0, z<0 \end{cases}$
-</div>
+```
 
 The range of ReLU is from $0$ to $\infty$, providing a stable output of $0$ if the input $z$ is less than $0$ and a linear output of $z$ is the input $z$ is greater than $0$. 
 
@@ -1400,20 +1397,17 @@ $Leaky$ $ReLU$ is an activation function based on ReLU with the difference being
 
 Mathematically, it is defined as:
 
-<div align = 'center'>
-
+```math
 $LeakyReLU(z) = \begin{cases} z, z>0 \\ 0.01z, z<0 \end{cases}$
 
 $LeakyReLU(z) = max(.01z, z)$
-
-</div>
+```
 
 The derivative of Leaky ReLU can be defined as:
 
-<div align = 'center'>
-
+```math
 $LeakyReLU'(z) = \begin{cases} 1, z > 0 \\ .01, z < 0 \end{cases}$
-</div>
+```
 
 The range of $Leaky$ $ReLU$ goes from $-\infty$ to $\infty$. Given this purely unbounded range, unlike ReLU, it isn't prone to 'dead neurons'. 
 
@@ -1638,7 +1632,7 @@ Then dropping out a set of weights, during backpropagation, forces a subset of n
 > [!IMPORTANT]
 > *It's important to note, when you compute the gradients, to use the dropped out input, **Ã**, not the original input **A**.*
 > 
-> *This will ensure that the gradients for the respective parameter, say **W**, that were dropped out remain $0$ and don't get updated for a given forward pass, again, based on probability **p***
+> *This will ensure that the gradients for the respective parameter, say **W**, that were dropped out remain 0 and don't get updated for a given forward pass, again, based on probability **p***
 
 This reduces co-dependence as the "lazy" weights, that have a smaller magnitude, will be forced to update at a steeper rate while the the already "strong" weights don't get updated for the given forward pass.
 
@@ -2145,9 +2139,9 @@ So Adam, essentially makes use of an $L2$ norm to estimate the second moment, $V
 
 Then the learning rate, $\alpha$ is adapted inversely to this $L2$ norm of the gradients by the division of $\frac{\alpha}{\sqrt{S∂\theta}}.$
 
-*The term, $\sqrt{S∂\theta}$ can be conceptually considered the $L2$ norm of the gradients, up until iteration, $t$.*
+Note that, the term, $\sqrt{S∂\theta}$ can be conceptually considered the $L2$ norm of the gradients, up until iteration, $t$.*
 
-It was found, [in the original paper for Adam](https://arxiv.org/pdf/1412.6980), that this inverse $L2$ norm of the gradients, can be generalized to an $LP$ based norm, only if an equation is derived when the limit of $p$ is set to go to $\infty$.
+So, it was found, [in the original paper for Adam](https://arxiv.org/pdf/1412.6980), that this inverse $L2$ norm of the gradients, can be generalized to an $LP$ based norm, only if an equation is derived when the limit of $p$ is set to go to $\infty$.
 
 <div align = 'center'>
 
@@ -2294,7 +2288,7 @@ $Z_1 = W_1X + B_1$
 
 $Z_{1norm} = BatchNorm(Z_1)$
 
-$\tilde{Z}_{1norm} = \gamma Z_{1norm} + \beta$
+$Z_{1norm} = \gamma Z_{1norm} + \beta$
 
 $A_1 = LeakyReLU(Z_1)$
 
