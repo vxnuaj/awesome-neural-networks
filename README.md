@@ -2285,7 +2285,7 @@ Now, to allow for a neural network to apply the parameters $\gamma$ and $\beta$,
 ```math
 Z_1 = W_1X + B_1
 
-$Z_{1norm} = BatchNorm(Z_1)$
+Z_{1norm} = BatchNorm(Z_1)
 
 $\tilde{Z}_{1norm} = \gamma Z_{1norm} + \beta$
 
