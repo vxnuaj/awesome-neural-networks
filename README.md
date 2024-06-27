@@ -2386,7 +2386,7 @@ It now looks as:
 \frac{∂L}{∂W_1} = (\frac{∂L}{∂Z_{1}})(\frac{∂Z_1}{∂W_1}) = (\frac{∂L}{∂Z_1}) \cdot X^T
 ```
 
-And as mentioned before, to update the $\gamma$ and $\beta$, a simple update rule can be applied, of $\theta = \theta - \alpha (\frac{∂L}{∂\theta}$
+And as mentioned before, to update the $\gamma$ and $\beta$, a simple update rule can be applied, of $\theta = \theta - \alpha (\frac{∂L}{∂\theta})$
 
 > [!NOTE]
 > *If you're using a different optimizer, such as Adam or RMSprop, you'd apply them in an equivalent manner here, as was done without BatchNorm, taking the EWA of gamma and beta, to then compute a weight decay and / or momentum.*
