@@ -1344,15 +1344,15 @@ $ReLU$ is an activation function that's $0$ when $z < 0$ and linear when $z > 0$
 Mathematically, it's defined as:
 
 ```math
-$ReLU(z) = \begin{cases} z, z>0 \\ 0, z<0 \end{cases}$
+ReLU(z) = \begin{cases} z, z>0 \\ 0, z<0 \end{cases}
 
-$ReLU(z) = max(0, z)$
+ReLU(z) = max(0, z)
 ```
 
 while it's derivative looks like:
 
 ```math
-$ReLU'(z) = \begin{cases} 1, z>0 \\ 0, z<0 \end{cases}$
+ReLU'(z) = \begin{cases} 1, z>0 \\ 0, z<0 \end{cases}
 ```
 
 The range of ReLU is from $0$ to $\infty$, providing a stable output of $0$ if the input $z$ is less than $0$ and a linear output of $z$ is the input $z$ is greater than $0$. 
@@ -1398,15 +1398,15 @@ $Leaky$ $ReLU$ is an activation function based on ReLU with the difference being
 Mathematically, it is defined as:
 
 ```math
-$LeakyReLU(z) = \begin{cases} z, z>0 \\ 0.01z, z<0 \end{cases}$
+LeakyReLU(z) = \begin{cases} z, z>0 \\ 0.01z, z<0 \end{cases}
 
-$LeakyReLU(z) = max(.01z, z)$
+LeakyReLU(z) = max(.01z, z)
 ```
 
 The derivative of Leaky ReLU can be defined as:
 
 ```math
-$LeakyReLU'(z) = \begin{cases} 1, z > 0 \\ .01, z < 0 \end{cases}$
+LeakyReLU'(z) = \begin{cases} 1, z > 0 \\ .01, z < 0 \end{cases}
 ```
 
 The range of $Leaky$ $ReLU$ goes from $-\infty$ to $\infty$. Given this purely unbounded range, unlike ReLU, it isn't prone to 'dead neurons'. 
@@ -2336,7 +2336,7 @@ $\frac{∂L}{\tilde{∂Z}_{2norm}} = (\frac{∂L}{∂A_2})(\frac{∂A_2}{\tilde{
 $\frac{∂L}{∂\gamma_2} = (\frac{∂L}{\tilde{∂Z_{2norm}}})(\frac{∂\tilde{Z_{2norm}}}{∂\gamma_2}) = \frac{∂L}{\tilde{∂Z_{2norm}}} * Z_{2norm}$
 
 $\frac{∂L}{∂\beta_2} = (\frac{∂L}{\tilde{∂Z_{2norm}}})(\frac{\tilde{∂Z_{2norm}}}{∂\beta_2}) = \sum \frac{∂L}{\tilde{Z_{2norm}}}, axis = 1, keepdims = True$
-
+```
 $\frac{∂L}{∂Z_2} = (\frac{∂L}{\tilde{∂Z_{2norm}}}) (\frac{\tilde{∂Z_{2norm}}}{∂Z_{2norm}})(\frac{∂Z_{2norm}}{∂Z_2}) = \frac{∂L}{\tilde{∂Z_{2norm}}} * \gamma_2 * \frac{1}{|{\sigma_2}|}$
 
 $\frac{∂L}{∂W_2} = (\frac{∂L}{∂Z_2})(\frac{∂Z_2}{∂W_2}) = (\frac{∂L}{∂Z_2}) \cdot A_1^T$
