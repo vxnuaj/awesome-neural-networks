@@ -2282,26 +2282,31 @@ This is as $\gamma$ has the ability to scale the $Var$ of a set of inputs and $\
 
 Now, to allow for a neural network to apply the parameters $\gamma$ and $\beta$, we apply another affine transformation, this time involving $\gamma$ and $\beta$, right after the $BatchNorm$ operation.
 
+<div align = 'center'>
+
 $Z_1 = W_1X + B_1$
 
 $Z_{1norm} = BatchNorm(Z_1)$
-
+</div>
 ```math
 \tilde{Z}_{1norm} = \gamma Z_{1norm} + \beta$
 ```
+<div align = 'center'>
 
 $A_1 = LeakyReLU(Z_1)$
 
 $Z_2 = W_2A_1 + B_2$
 
 $Z_{2norm} = BatchNorm(Z_2)$
+</div>
 
 ```math
 \tilde{Z}_{2norm} = \gamma Z_{2norm} + \beta
 ```
+<div align = 'center'>
 
 $A_2 = Softmax(Z_2)$
-
+</div>
 
 Now for one last final modification, we don't need the addition of a $B$ term in the original affine transformation any longer. This is as the $\beta$ parameter will automatically make the bias shift redundant and cancel they may cancel each other's intended effects out.
 
