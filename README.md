@@ -2283,7 +2283,7 @@ This is as $\gamma$ has the ability to scale the $Var$ of a set of inputs and $\
 Now, to allow for a neural network to apply the parameters $\gamma$ and $\beta$, we apply another affine transformation, this time involving $\gamma$ and $\beta$, right after the $BatchNorm$ operation.
 
 ```math
-$Z_1 = W_1X + B_1$
+Z_1 = W_1X + B_1
 
 $Z_{1norm} = BatchNorm(Z_1)$
 
