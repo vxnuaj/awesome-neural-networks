@@ -288,8 +288,6 @@ Within this function, if our label $Y$ is denoted as $0$, we effectively cancel 
 
 Therefore, we'd only compute: $- (1 - Y) \cdot ln(1 - \hat{Y})$.
 
-*Note that $\hat{Y}$ is the raw output of the $\sigma$ within range $[0,1]$, not the binary thresholded value $0$ or $1$*
-
 Now for example if our $\hat{Y}$ turnt out to be the value $.24$, our loss would be computed as:
 
 <div align = 'center'>
@@ -408,7 +406,7 @@ $B = B - \alpha \cdot \frac{∂L(Y, \hat{Y})}{∂B}$
 
 This weight update allows for the parameters $W$ and $B$ to be updated in such a way that the model begins to minimize the value of loss, optimizing for a global minimum, ultimately increasing it's accuracy as a byproduct.
 
-Let's say we had a fixed value of $\alpha$ at $.1$. If a hypothetical gradient, say $∂W$was larger, at a value of $2.4$, our weights, $W$ would update by a value of $.24$. 
+Let's say we had a fixed value of $\alpha$ at $.1$. If a hypothetical gradient, say $∂W$ was larger, at a value of $2.4$, our weights, $W$ would update by a value of $.24$. 
 
 <div align = 'center'>
 
@@ -486,7 +484,6 @@ Where you see the $\sigma$ being defined as $\frac{1}{1 + e^{-z}}$, we can now c
 $\tilde{\sigma}(z) = \frac{e^z}{\sum{e^z}}$<br>
 </div>
 
-*$\tilde{\sigma}$ being the softmax*
 
 The modification to the $\sigma$ equation, to turn it into ***softmax*** ($\tilde{\sigma}$), allows for the computation of the probabilities for multiple classes.
 
@@ -498,7 +495,7 @@ Let's say the output logit, $z$, has the dimensions of $(classes, samples)$, whe
 
 So in this case, when you take the summation of $e^z$, you'd sum over the first axis as you want to calculate the probabilities over the number of total classes
 
-> *Of course, in practice you might have $(samples, classes)$ instead, in which you'd sum over the second axis instead.*
+> *Of course, in practice you might have (samples, classes) instead, in which you'd sum over the second axis instead.*
 
 So ultimately to sum things up, the softmax equation, $\frac{e^z}{\sum e^z}$, allows us to normalize the output logit, $z$, to a probability within the range $[0, 1]$, which can be easily interpretable as a percentage value (%).
 
@@ -532,11 +529,11 @@ $L(\hat{Y}, Y_{onehot}) = Y_{onehot} \cdot ln(\hat{Y})$
 
 The difference here is that $Y$, rather than taking the form of raw labels, takes the form of one hot encodings of the labels $Y$. 
 
-Essentially, **a one hot encoding** is a vector of $0$s and a singular $1$. The index where the singular $1$ is located, identifies our true label.
+Essentially, **a one hot encoding** is a vector of $0$ s and a singular $1$. The index where the singular $1$ is located, identifies our true label.
 
-If I had the one hot encoding of $[0, 0, 0, 1]$, my label would be defined as $3$, as the singular $1$ is located at the $3$rd index of the one hot encoding.
+If I had the one hot encoding of $[0, 0, 0, 1]$, my label would be defined as $3$, as the singular $1$ is located at the 3rd index of the one hot encoding.
 
-If I had the one hot encoding of $[1, 0, 0, 0]$, my label woudl be defined as $0$, as the singular $1$ is located at the $0$th index of the one hot encoding.
+If I had the one hot encoding of $[1, 0, 0, 0]$, my label woudl be defined as $0$, as the singular $1$ is located at the 0th index of the one hot encoding.
 
 > *Read more about one hot encodings [here](https://en.wikipedia.org/wiki/One-hot)*
 
@@ -678,7 +675,7 @@ $accuracy = \frac{\sum{pred == Y}}{samples}$ <br><br>
 </div>
 
 > [!IMPORTANT]
-> *When training a neural network, you typically wouldn't use the $argmax$ed values to computed the loss or to compute gradients to train the model. You'd want to use the raw outputs, $A_2$ as a means to calculate the loss and the gradients as it's more representative of the true outputs of the neural network.*
+> *When training a neural network, you typically wouldn't use the argmaxed values to computed the loss or to compute gradients to train the model. You'd want to use the raw outputs, A2 as a means to calculate the loss and the gradients as it's more representative of the true outputs of the neural network.*
 
 So now, given the above, we can define a full forward pass of a neural network as:
 
@@ -720,7 +717,7 @@ $L(\hat{Y}, Y) = Y_{onehot} * ln(\hat{Y})$<br><br>
 Just as prior, backpropagation involes the calculation of the gradients of the loss, $L(\hat{Y}, Y)$, with respect to the given parameters, in this case being $W_1$, $B_1$, $W_2$, and $B_2$.
 
 > [!NOTE]
-> *I'll be interchangeably using $\theta_l$ to denote either parameters at the $l$th layer*
+> *I'll be interchangeably using theta to denote either parameters at the lth layer*
 
 And again, just as prior, this involves the use of the chain rule of calculus.
 
@@ -786,7 +783,7 @@ So given that we're already taking the matrix multiplication of $(A_2 - Y_{oneho
 
 <div align = 'center'>
 
-$\frac{L(\hat{Y}, Y)}{W_2} * \frac{1}{m}, m = sample$&nbsp;$size$
+$\frac{L(\hat{Y}, Y)}{W_2} * \frac{1}{m}, m = sample$ &nbsp; $size$
 
 </div>
 
