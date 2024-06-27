@@ -2282,13 +2282,12 @@ This is as $\gamma$ has the ability to scale the $Var$ of a set of inputs and $\
 
 Now, to allow for a neural network to apply the parameters $\gamma$ and $\beta$, we apply another affine transformation, this time involving $\gamma$ and $\beta$, right after the $BatchNorm$ operation.
 
-<div align = 'center'>
-
+```math
 $Z_1 = W_1X + B_1$
 
 $Z_{1norm} = BatchNorm(Z_1)$
 
-$Z_{1norm} = \gamma Z_{1norm} + \beta$
+$\tilde{Z}_{1norm} = \gamma Z_{1norm} + \beta$
 
 $A_1 = LeakyReLU(Z_1)$
 
@@ -2299,14 +2298,13 @@ $Z_{2norm} = BatchNorm(Z_2)$
 $\tilde{Z}_{2norm} = \gamma Z_{2norm} + \beta$
 
 $A_2 = Softmax(Z_2)$
-</div>
+```
 
 Now for one last final modification, we don't need the addition of a $B$ term in the original affine transformation any longer. This is as the $\beta$ parameter will automatically make the bias shift redundant and cancel they may cancel each other's intended effects out.
 
 So we can remove the bias term, $B$, and the final process for Batch Normalization for a 2-layer network looks as: 
 
-<div align = 'center'>
-
+```math
 $Z_1 = W_1X$
 
 $Z_{1norm} = BatchNorm(Z_1)$
@@ -2322,7 +2320,7 @@ $Z_{2norm} = BatchNorm(Z_2)$
 $\tilde{Z}_{2norm} = \gamma Z_{2norm} + \beta$
 
 $A_2 = Softmax(Z_2)$
-</div>
+```
 
 Then, to train the model, inclusive of the parameters $\beta$ and $\gamma$, we can follow the same exact process that is done for training $W$.
 
@@ -2332,8 +2330,7 @@ The gradients for the parameters, now that we've included 2 batch normalization 
 
 It now looks as:
 
-<div align = 'center'>
-
+```math
 $\frac{∂L}{\tilde{∂Z}_{2norm}} = (\frac{∂L}{∂A_2})(\frac{∂A_2}{\tilde{∂Z_{2norm}}}) = A_2 - Y_{onehot}$
 
 $\frac{∂L}{∂\gamma_2} = (\frac{∂L}{\tilde{∂Z_{2norm}}})(\frac{∂\tilde{Z_{2norm}}}{∂\gamma_2}) = \frac{∂L}{\tilde{∂Z_{2norm}}} * Z_{2norm}$
@@ -2354,7 +2351,7 @@ $\frac{∂L}{∂Z_1} = (\frac{∂L}{\tilde{∂Z_{1norm}}}) (\frac{\tilde{∂Z_{1
 
 $\frac{∂L}{∂W_1} = (\frac{∂L}{∂Z_{1}})(\frac{∂Z_1}{∂W_1}) = (\frac{∂L}{∂Z_1}) \cdot X^T$<br><br>
 <em style = 'font-size:12px'> Simpler derivations are rightmost... this took forever</em>
-</div>
+```
 
 And as mentioned before, to update the $\gamma$ and $\beta$, a simple update rule can be applied, of $\theta = \theta - \alpha (\frac{∂L}{∂\theta}$
 
