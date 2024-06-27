@@ -11,8 +11,7 @@ It's designed for anyone with a base level of knowledge on Calculus, Linear Alge
 - [awesome-neural-networks](#awesome-neural-networks)
   - [table of contents](#table-of-contents)
   - [motivation](#motivation)
-  - [Logistic \& Softmax Regression](#logistic--softmax-regression)
-- [logistic \& softmax regression](#logistic--softmax-regression-1)
+- [logistic \& softmax regression](#logistic--softmax-regression)
   - [into logistic regression](#into-logistic-regression)
     - [**Touching on the logistic sigmoid function**](#touching-on-the-logistic-sigmoid-function)
     - [the forward pass](#the-forward-pass)
@@ -71,8 +70,6 @@ The possible futures humanity can unlock with these models are increasingly opti
 Personally, I knew that if I wanted to get deeper into the technical trenches of convolutional neural networks, transformers, deep RL, and more, foundational knowledge was key to understand and refine.
 
 So this is why I built this repo, to build foundational knowledge for myself and build a resource for others to do so as well.
-
-## Logistic & Softmax Regression
 
 # logistic & softmax regression
 
