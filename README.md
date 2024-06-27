@@ -1,6 +1,6 @@
 # awesome-neural-networks
 
-> *Last Update: June 24, 2024*
+> *Last Update: June 26, 2024*
 
 This repository is a dive into vanilla neural networks, implemented in pure NumPy to accelerate foundational learning.
 
