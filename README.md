@@ -2313,19 +2313,26 @@ Now for one last final modification, we don't need the addition of a $B$ term in
 
 So we can remove the bias term, $B$, and the final process for Batch Normalization for a 2-layer network looks as: 
 
-```math
+<div align = 'center'>
+
 $Z_1 = W_1X$
 
 $Z_{1norm} = BatchNorm(Z_1)$
+</div>
 
+```math
 $\tilde{Z}_{1norm} = \gamma Z_{1norm} + \beta$
+```
+<div align = 'center'>
 
 $A_1 = LeakyReLU(Z_1)$
 
 $Z_2 = W_2A_1$
 
 $Z_{2norm} = BatchNorm(Z_2)$
+</div>
 
+```math
 $\tilde{Z}_{2norm} = \gamma Z_{2norm} + \beta$
 
 $A_2 = Softmax(Z_2)$
@@ -2341,25 +2348,41 @@ It now looks as:
 
 ```math
 \frac{∂L}{\tilde{∂Z}_{2norm}} = (\frac{∂L}{∂A_2})(\frac{∂A_2}{\tilde{∂Z_{2norm}}}) = A_2 - Y_{onehot}
+```
 
+```math
 \frac{∂L}{∂\gamma_2} = (\frac{∂L}{\tilde{∂Z_{2norm}}})(\frac{∂\tilde{Z_{2norm}}}{∂\gamma_2}) = \frac{∂L}{\tilde{∂Z_{2norm}}} * Z_{2norm}
+```
 
+```math
 \frac{∂L}{∂\beta_2} = (\frac{∂L}{\tilde{∂Z_{2norm}}})(\frac{\tilde{∂Z_{2norm}}}{∂\beta_2}) = \sum \frac{∂L}{\tilde{Z_{2norm}}}, axis = 1, keepdims = True
 ```
 
 ```math
 \frac{∂L}{∂Z_2} = (\frac{∂L}{\tilde{∂Z_{2norm}}}) (\frac{\tilde{∂Z_{2norm}}}{∂Z_{2norm}})(\frac{∂Z_{2norm}}{∂Z_2}) = \frac{∂L}{\tilde{∂Z_{2norm}}} * \gamma_2 * \frac{1}{|{\sigma_2}|}
+```
 
+```math
 \frac{∂L}{∂W_2} = (\frac{∂L}{∂Z_2})(\frac{∂Z_2}{∂W_2}) = (\frac{∂L}{∂Z_2}) \cdot A_1^T
+```
 
+```math
 \frac{∂L}{\tilde{∂Z_{1norm}}} = (\frac{∂L}{∂Z_2})(\frac{∂Z_2}{A_1})(\frac{∂A_1}{∂Z_{1norm}}) = W_2^T \cdot \frac{∂L}{∂Z_2} * ReLU_{deriv}(\tilde{Z_{1norm}})
+```
 
+```math
 \frac{∂L}{\gamma_1} = (\frac{∂L}{\tilde{∂Z_{1norm}}})(\frac{\tilde{∂Z_{1norm}}}{∂\gamma_1}) = (\frac{∂L}{\tilde{Z_{1norm}}}) * Z_{1norm}
+```
 
+```math
 \frac{∂L}{∂\beta_1} = (\frac{∂L}{\tilde{∂Z_{1norm}}})(\frac{\tilde{∂Z_{1norm}}}{∂\beta_1}) = \sum{\frac{∂L}{∂\tilde{Z}_{1norm}}}, axis = 1, keepdims = True
+```
 
+```math
 \frac{∂L}{∂Z_1} = (\frac{∂L}{\tilde{∂Z_{1norm}}}) (\frac{\tilde{∂Z_{1norm}}}{∂Z_{1norm}})(\frac{∂Z_{1norm}}{∂Z_1}) = \frac{∂L}{\tilde{∂Z_{1norm}}} * \gamma_1 * \frac{1}{|{\sigma_1}|}
+```
 
+```math
 \frac{∂L}{∂W_1} = (\frac{∂L}{∂Z_{1}})(\frac{∂Z_1}{∂W_1}) = (\frac{∂L}{∂Z_1}) \cdot X^T
 ```
 
