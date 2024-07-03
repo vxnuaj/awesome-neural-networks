@@ -11,12 +11,12 @@ import pickle
 import sys
 
 def load_model(file):
-    with open(file) as f:
+    with open(file, 'rb') as f:
         return pickle.load(f)
 
-def save_model(file, w1, b1, w2, b2, w3, b3):
-    with open(file) as f:
-        pickle.dump((w1, b1, w2, b2, w3, b3), f)
+def save_model(file, w1, b1, w2, b2):
+    with open(file, 'wb') as f:
+        pickle.dump((w1, b1, w2, b2), f)
 
 def init_params():
     rng = np.random.default_rng(seed = 1)
@@ -91,10 +91,10 @@ def update_momentum(x, one_hot_y, w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2, alpha,
     '''
     Accumulating the previous gradients. 
     '''
-    vdw1 = beta * vdw1 + dw1 
-    vdb1 = beta * vdb1 + db1
-    vdw2 = beta * vdw2 + dw2
-    vdb2 = beta * vdb2 + db2
+    vdw1 = beta * vdw1 + ( 1 - beta ) * dw1 
+    vdb1 = beta * vdb1 + ( 1 - beta ) * db1
+    vdw2 = beta * vdw2 + ( 1 - beta ) * dw2
+    vdb2 = beta * vdb2 + ( 1 - beta) * db2
 
     '''
     Weight Update 
@@ -131,7 +131,7 @@ def gradient_descent_momentum(x, y, w1, b1, w2, b2, epochs, alpha, beta, file):
         loss_vec.append(l)
         acc_vec.append(acc)
         epochs_vec.append(epoch)
-
+    save_model(file, w1, b1, w2, b2)
     return w1, b1, w2, b2, loss_vec, acc_vec, epochs_vec
     
 def model(x, y, epochs, alpha, beta, file):
@@ -148,14 +148,14 @@ def model(x, y, epochs, alpha, beta, file):
 
 if __name__ == "__main__":
 
-    data = np.array(pd.read_csv('data/fashion-mnist_train.csv'))
+    data = np.array(pd.read_csv('datasets/fashion-mnist_train.csv'))
 
     X_train = data[:, 1:786].T / 255 #784, 60000
     Y_train = data[:, 0].reshape(1, -1) #1, 60000
 
-    file = '../models/BatchNN.pkl'
+    file = 'models/NesterovNN.pkl'
 
-    w1, b1, w2, b2, loss_vec, acc_vec, epochs_vec = model(X_train, Y_train, epochs = 250, alpha = .1, beta = .9, file = file)
+    w1, b1, w2, b2, loss_vec, acc_vec, epochs_vec = model(X_train, Y_train, epochs =998, alpha = .1, beta = .9, file = file)
 
     fig, axs = plt.subplots(2, 1, figsize=(10, 10), sharex=True)
 
