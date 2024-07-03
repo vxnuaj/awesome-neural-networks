@@ -13,7 +13,7 @@ It's designed for anyone with a base level of knowledge on Calculus, Linear Alge
   - [motivation](#motivation)
 - [logistic \& softmax regression](#logistic--softmax-regression)
   - [into logistic regression](#into-logistic-regression)
-    - [**Touching on the logistic sigmoid function**](#touching-on-the-logistic-sigmoid-function)
+    - [Touching on the logistic sigmoid function](#touching-on-the-logistic-sigmoid-function)
     - [the forward pass](#the-forward-pass)
     - [the artifical neuron](#the-artifical-neuron)
     - [computing the loss](#computing-the-loss)
@@ -55,6 +55,7 @@ It's designed for anyone with a base level of knowledge on Calculus, Linear Alge
     - [RMSprop](#rmsprop)
     - [adaptive moment estimation](#adaptive-moment-estimation)
     - [adamax](#adamax)
+    - [nesterov momentum](#nesterov-momentum)
   - [normalization](#normalization)
     - [normalizing first-layer inputs](#normalizing-first-layer-inputs)
     - [Batch Normalization](#batch-normalization)
@@ -91,7 +92,7 @@ Rather, for intuition, in [logistic regression](https://www.youtube.com/playlist
 
 In essence, logistic regression involves a combination of an affine transformation and the [`logistic`](https://en.wikipedia.org/wiki/Logistic_function) activation function, which is commonly called *sigmoid* and referenced as $\sigma()$, to perform [binary classification](https://en.wikipedia.org/wiki/Binary_classification).
 
-### **Touching on the logistic sigmoid function**
+### Touching on the logistic sigmoid function
 
 The `logistic sigmoid` activation function can be mathematically defined as:
 
@@ -2169,6 +2170,43 @@ $\theta = \theta - \frac{\alpha}{\sqrt{S∂\theta + \epsilon}}(V∂\theta)$
 Again, as previous, determining the hyperparameters for $\beta_1$ and $\beta_2$ are a matter of empirical testing.
 
 As for choosing between AdaMax and Adam, it's commonly said that AdaMax, in theory, is better suited for training models that involve embeddings and sparse weight updates.
+
+### nesterov momentum
+
+Nesterov momentum is a variant of Momentum, which serves a similar, yet upgraded means to compute the optima of the loss in a faster and more direct manner when compared to momentum.
+
+You, in a sense, allow for the Gradient Descent to 'look ahead' and predict what the optimal next jump would be. This is done through a 'lookahead'.
+
+This 'lookahead' is computed by **first**, computing the gradient at the current position using the previously accumulated gradient and making a big jump in the direction of the previously accumulated gradient.
+
+<div align = 'center'>
+<img src = '../util_images/nesterov.png' width = 600>
+</div><br>
+
+This 'lookahead' term is more of a placeholder term, rather than serving as a real update of $\theta$
+
+**2nd**, is then measuring the gradient at the location of where we ended up at after the big jump and then computing the accumulated gradient, to then finally compute the true update of $\theta$ using the newly accumulated gradient.
+
+Then this process is repeated for all time steps / iterations.
+
+This can be defined as:
+
+<div align = 'center'>
+
+$\theta_{lookahead} = \theta - \beta* v\theta_t$ 
+
+Compute: $∂J(\theta_{lookahead})$
+
+$v\theta_t = \beta * v\theta_{t-1} + ( 1 - \beta ) * ∂J(\theta_{lookahead})$
+
+$\theta = \theta - \alpha * v\theta_t$
+</div>
+
+This then allows for the model to conjecture where the optimal jump might be and then correct after making that jump.
+
+Essentially, the $∂J(\theta_{lookahead})$ is added onto the $\beta * v\theta_{t-1}$, as a means of 'correcting' the error that would've been made from purely relying on the past accumulated gradients.
+
+While in regular momentum, the big jump would be made without any additional correction prior to the next iteration. The jump or weight update, would've just been made based on the current gradient and the accumulated past gradients without any intermediate error-correction.
 
 ## normalization
 
