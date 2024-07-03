@@ -2211,6 +2211,7 @@ Essentially, the $∂J(\theta_{lookahead})$ is added onto the $\beta * v\theta_{
 
 While in regular momentum, the big jump would be made without any additional correction prior to the next iteration. The jump or weight update, would've just been made based on the current gradient and the accumulated past gradients without any intermediate error-correction.
 
+
 ### nadam
 
 > *Checkout the implementation of Nadam [here](NadamNN.py)!*
@@ -2221,17 +2222,22 @@ This then allows for Adam to leverage the benefits that Nesterov Momentum may ha
 
 **So, mathematically, this can be defined as:**
 
+<div align = 'center'>
+
 $\theta_{lookahead} = \theta - \beta *  v\theta_{t-1}$
+
 $a1, a2, z1, z2 = forward()$
+
 $∂J(\theta_{lookahead}) = backward(a1, a2, z1, z2)$
 
 $v\theta_t = \beta * v\theta_{t-1} + ( 1 - \beta) * ∂J(\theta_{lookahead})$
+
 $s\theta_t = \beta * v\theta_{t-1} + (1 - \beta) * ∂J(\theta_{lookahead})^2$
 
 $\theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{s\theta_t}} * v\theta_t$
+</div>
 
 The added Nesterov Momentum as the first moment, allows for the momentum term to make more precise predictions of the direction of the optimal gradient step, at a better manner than Momentum.
-
 
 # normalization
 
