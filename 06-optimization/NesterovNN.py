@@ -103,7 +103,7 @@ def update_momentum(x, one_hot_y, w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2, alpha,
     b1 = b1 - alpha * vdb1
     w2 = w2 - alpha * vdw2
     b2 = b2 - alpha * vdb2
-    return w1, b1, w2, b2
+    return w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2
 
 def gradient_descent_momentum(x, y, w1, b1, w2, b2, epochs, alpha, beta, file):
     one_hot_y = one_hot(y)
@@ -122,7 +122,7 @@ def gradient_descent_momentum(x, y, w1, b1, w2, b2, epochs, alpha, beta, file):
         l = cat_cross(one_hot_y, a2)
         acc = accuracy(y, a2)
 
-        w1, b1, w2, b2 = update_momentum(x, one_hot_y, w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2, alpha, beta)
+        w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2 = update_momentum(x, one_hot_y, w1, b1, w2, b2, vdw1, vdb1, vdw2, vdb2, alpha, beta)
     
         print(f"epoch: {epoch}")
         print(f"loss: {l}")
@@ -148,7 +148,7 @@ def model(x, y, epochs, alpha, beta, file):
 
 if __name__ == "__main__":
 
-    data = np.array(pd.read_csv('../data/fashion-mnist_train.csv'))
+    data = np.array(pd.read_csv('data/fashion-mnist_train.csv'))
 
     X_train = data[:, 1:786].T / 255 #784, 60000
     Y_train = data[:, 0].reshape(1, -1) #1, 60000
