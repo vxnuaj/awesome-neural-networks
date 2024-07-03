@@ -56,7 +56,7 @@ It's designed for anyone with a base level of knowledge on Calculus, Linear Alge
     - [adaptive moment estimation](#adaptive-moment-estimation)
     - [adamax](#adamax)
     - [nesterov momentum](#nesterov-momentum)
-  - [normalization](#normalization)
+- [normalization](#normalization)
     - [normalizing first-layer inputs](#normalizing-first-layer-inputs)
     - [Batch Normalization](#batch-normalization)
 
@@ -2208,7 +2208,7 @@ Essentially, the $∂J(\theta_{lookahead})$ is added onto the $\beta * v\theta_{
 
 While in regular momentum, the big jump would be made without any additional correction prior to the next iteration. The jump or weight update, would've just been made based on the current gradient and the accumulated past gradients without any intermediate error-correction.
 
-## normalization
+# normalization
 
 Normalization is simply the process of scaling down the inputs to a neural network by standardizing or normalizing that given set of inputs
 
